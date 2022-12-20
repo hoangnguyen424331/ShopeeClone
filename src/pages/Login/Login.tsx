@@ -1,29 +1,75 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation } from '@tanstack/react-query'
+import { toast } from 'react-toastify'
+
+import { loginAccount } from 'src/apis/auth.api'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
+import { schema, Schema } from 'src/utils/rules'
+import { isAxiosUnprocessableEntity } from 'src/utils/utils'
+import { ResponseApi } from 'src/types/utils.type'
+
+type FormData = Omit<Schema, 'confirm_password'>
+const loginSchema = schema.omit(['confirm_password'])
 
 export default function Login() {
   const {
     register,
     handleSubmit,
+    setError,
+    watch,
     formState: { errors }
-  } = useForm()
+  } = useForm<FormData>({ resolver: yupResolver(loginSchema) })
+
+  const loginAccountMutation = useMutation({
+    mutationFn: (body: FormData) => loginAccount(body)
+  })
 
   const onSubmit = handleSubmit((data) => {
-    console.log(data)
+    loginAccountMutation.mutate(data, {
+      onSuccess: () => {
+        toast.success('Đăng nhập thành công')
+      },
+      onError: (error) => {
+        if (isAxiosUnprocessableEntity<ResponseApi<FormData>>(error)) {
+          const formError = error.response?.data.data
+          if (formError) {
+            Object.keys(formError).forEach((key) => {
+              setError(key as keyof FormData, {
+                message: formError[key as keyof FormData],
+                type: 'Server'
+              })
+            })
+          }
+        }
+      }
+    })
   })
+
+  const value = watch()
+  console.log(value, errors)
 
   return (
     <div className='bg-orange'>
       <div className='container'>
         <div className='grid grid-cols-1 py-12 lg:mr-10 lg:grid-cols-5 lg:py-32'>
           <div className='lg:col-span-2 lg:col-start-4'>
-            <form className='rounded bg-white p-10 shadow-sm' onSubmit={onSubmit}>
+            <form className='rounded bg-white p-10 shadow-sm' onSubmit={onSubmit} noValidate>
               <p className='text-2xl'>Đăng nhập</p>
-              <Input name='email' type='email' className='mt-8' placeholder='Email' />
               <Input
+                name='email'
+                type='email'
+                register={register}
+                errorMessage={errors.email?.message}
+                className='mt-8'
+                placeholder='Email'
+              />
+              <Input
+                register={register}
+                errorMessage={errors.password?.message}
                 name='password'
                 type='password'
                 className='mt-2'
@@ -32,10 +78,7 @@ export default function Login() {
                 autoComplete='on'
               />
               <div className='mt-3'>
-                <Button
-                  type='submit'
-                  className='flex w-full justify-center bg-orange py-4 px-2 text-center uppercase text-white hover:bg-red-600'
-                >
+                <Button className='flex w-full justify-center bg-orange py-4 px-2 text-center uppercase text-white hover:bg-red-600'>
                   Đăng nhập
                 </Button>
               </div>
