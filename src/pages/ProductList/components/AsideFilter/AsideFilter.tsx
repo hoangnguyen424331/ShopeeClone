@@ -2,11 +2,12 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
+import { path } from 'src/constants/path'
 
 export default function AsideFilter() {
   return (
     <div className='py-4'>
-      <Link to='/' className='flex items-center font-bold capitalize'>
+      <Link to={path.home} className='flex items-center font-bold capitalize'>
         <svg viewBox='0 0 12 10' className='mr-3 h-4 w-3 fill-current'>
           <g fillRule='evenodd' stroke='none' strokeWidth={1}>
             <g transform='translate(-373 -208)'>
@@ -25,7 +26,7 @@ export default function AsideFilter() {
       <p className='my-4 h-[1px] bg-gray-300' />
       <ul>
         <li className='flex items-center py-2 pl-2'>
-          <Link to='/' className='relative  px-2 font-semibold capitalize text-orange'>
+          <Link to={path.home} className='relative  px-2 font-semibold capitalize text-orange'>
             <svg viewBox='0 0 4 7' className='absolute top-1 left-[-10px] h-2 w-2 fill-orange'>
               <polygon points='4 3.5 0 0 0 7' />
             </svg>
@@ -33,7 +34,7 @@ export default function AsideFilter() {
           </Link>
         </li>
       </ul>
-      <Link to='/' className='flex items-center font-bold capitalize'>
+      <Link to={path.home} className='flex items-center font-bold capitalize'>
         <svg
           enableBackground='new 0 0 15 15'
           viewBox='0 0 15 15'
@@ -83,7 +84,7 @@ export default function AsideFilter() {
       <p className='text-sm capitalize'>Đánh giá</p>
       <ul className='my-3'>
         <li className='py-1 pl-2'>
-          <Link to='/' className='flex items-center text-sm'>
+          <Link to={path.home} className='flex items-center text-sm'>
             {Array(5)
               .fill(0)
               .map((_, index) => (
