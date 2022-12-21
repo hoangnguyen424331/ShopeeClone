@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -8,15 +8,17 @@ import { toast } from 'react-toastify'
 
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
-
 import { Schema, schema } from 'src/utils/rules'
 import { registerAccount } from 'src/apis/auth.api'
 import { isAxiosUnprocessableEntity } from 'src/utils/utils'
-import { ResponseApi } from 'src/types/utils.type'
+import { ErrorResponse } from 'src/types/utils.type'
+import { AppContext } from 'src/contexts/app.context'
+import { path } from 'src/constants/path'
 
 type FormData = Schema
 
 export default function Register() {
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const {
     register,
     handleSubmit,
@@ -31,11 +33,13 @@ export default function Register() {
   const onSubmit = handleSubmit((data) => {
     const body = omit(data, ['confirm_password'])
     registerAccountMutation.mutate(body, {
-      onSuccess: () => {
+      onSuccess: (data) => {
+        setIsAuthenticated(true)
+        setProfile(data.data.data.user)
         toast.success('Đăng ký thành công')
       },
       onError: (error) => {
-        if (isAxiosUnprocessableEntity<ResponseApi<Omit<FormData, 'confirm_password'>>>(error)) {
+        if (isAxiosUnprocessableEntity<ErrorResponse<Omit<FormData, 'confirm_password'>>>(error)) {
           const formError = error.response?.data.data
           if (formError) {
             Object.keys(formError).forEach((key) => {
@@ -86,13 +90,17 @@ export default function Register() {
                 autoComplete='on'
               />
               <div className='mt-2'>
-                <Button className='flex w-full items-center justify-center bg-red-500 py-4 px-2 text-sm uppercase text-white hover:bg-red-600'>
+                <Button
+                  isLoading={registerAccountMutation.isLoading}
+                  disabled={registerAccountMutation.isLoading}
+                  className='flex w-full items-center justify-center bg-red-500 py-4 px-2 text-sm uppercase text-white hover:bg-red-600'
+                >
                   Đăng ký
                 </Button>
               </div>
               <div className='mt-8 flex items-center justify-center'>
                 <span className='text-gray-400'>Bạn đã có tài khoản?</span>
-                <Link className='ml-1 text-red-400' to='/login'>
+                <Link className='ml-1 text-red-400' to={path.login}>
                   Đăng nhập
                 </Link>
               </div>

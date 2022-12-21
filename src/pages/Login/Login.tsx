@@ -1,26 +1,29 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
-import { toast } from 'react-toastify'
 
 import { loginAccount } from 'src/apis/auth.api'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import { schema, Schema } from 'src/utils/rules'
 import { isAxiosUnprocessableEntity } from 'src/utils/utils'
-import { ResponseApi } from 'src/types/utils.type'
+import { ErrorResponse } from 'src/types/utils.type'
+import { AppContext } from 'src/contexts/app.context'
+import { path } from 'src/constants/path'
 
 type FormData = Omit<Schema, 'confirm_password'>
 const loginSchema = schema.omit(['confirm_password'])
 
 export default function Login() {
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
     setError,
-    watch,
+    // watch,
     formState: { errors }
   } = useForm<FormData>({ resolver: yupResolver(loginSchema) })
 
@@ -30,11 +33,13 @@ export default function Login() {
 
   const onSubmit = handleSubmit((data) => {
     loginAccountMutation.mutate(data, {
-      onSuccess: () => {
-        toast.success('Đăng nhập thành công')
+      onSuccess: (data) => {
+        setIsAuthenticated(true)
+        setProfile(data.data.data.user)
+        navigate('/')
       },
       onError: (error) => {
-        if (isAxiosUnprocessableEntity<ResponseApi<FormData>>(error)) {
+        if (isAxiosUnprocessableEntity<ErrorResponse<FormData>>(error)) {
           const formError = error.response?.data.data
           if (formError) {
             Object.keys(formError).forEach((key) => {
@@ -49,8 +54,8 @@ export default function Login() {
     })
   })
 
-  const value = watch()
-  console.log(value, errors)
+  // const value = watch()
+  // console.log(value, errors)
 
   return (
     <div className='bg-orange'>
@@ -78,13 +83,17 @@ export default function Login() {
                 autoComplete='on'
               />
               <div className='mt-3'>
-                <Button className='flex w-full justify-center bg-orange py-4 px-2 text-center uppercase text-white hover:bg-red-600'>
+                <Button
+                  isLoading={loginAccountMutation.isLoading}
+                  disabled={loginAccountMutation.isLoading}
+                  className='flex w-full justify-center bg-orange py-4 px-2 text-center uppercase text-white hover:bg-red-600'
+                >
                   Đăng nhập
                 </Button>
               </div>
               <div className='mt-3 flex items-center justify-center'>
                 <span className='mr-1 text-gray-400'>Bạn chưa có tài khoản?</span>
-                <Link to='/register' className='text-red-400'>
+                <Link to={path.register} className='text-red-400'>
                   Đăng ký
                 </Link>
               </div>
