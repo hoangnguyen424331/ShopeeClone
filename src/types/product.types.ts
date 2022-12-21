@@ -30,7 +30,7 @@ export interface ProductList {
 export interface ProductListConfig {
   page?: number
   limit?: number
-  sort_by?: 'createAt' | 'view' | 'sold' | 'price'
+  sort_by?: 'createdAt' | 'view' | 'sold' | 'price'
   order?: 'asc' | 'desc'
   price_max?: number
   price_min?: number
