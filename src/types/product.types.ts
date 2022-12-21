@@ -37,4 +37,5 @@ export interface ProductListConfig {
   name?: string
   rating_filter?: number
   exclude?: string
+  category?: string
 }
