@@ -19,7 +19,8 @@ export default function useQueryConfig() {
       order: queryParams.order,
       price_max: queryParams.price_max,
       price_min: queryParams.price_min,
-      rating_filter: queryParams.rating_filter
+      rating_filter: queryParams.rating_filter,
+      category: queryParams.category
     },
     isUndefined
   )
