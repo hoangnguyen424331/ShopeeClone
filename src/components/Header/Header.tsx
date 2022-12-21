@@ -1,7 +1,27 @@
 import { Link } from 'react-router-dom'
 import Popover from '../Popover'
+import { useMutation } from '@tanstack/react-query'
+import { logoutAccount } from 'src/apis/auth.api'
+import { useCallback, useContext } from 'react'
+import { AppContext } from 'src/contexts/app.context'
+import { path } from 'src/constants/path'
 
 export default function Header() {
+  const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext)
+
+  const logoutMutation = useMutation({
+    mutationFn: logoutAccount,
+    onSuccess: () => {
+      setIsAuthenticated(false)
+      setProfile(null)
+    }
+  })
+
+  const handleLogout = useCallback(() => {
+    logoutMutation.mutate()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <div className='bg-[linear-gradient(-180deg,#f53d2d,#f63)] pb-5 pt-2'>
       <div className='container'>
@@ -44,43 +64,59 @@ export default function Header() {
               <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' />
             </svg>
           </Popover>
-          <Popover
-            renderPopover={
-              <div className='relative rounded-sm border border-gray-200 bg-white shadow-md'>
-                <Link
-                  to='/profile'
-                  className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'
-                >
-                  Tài khoản của tôi
-                </Link>
-                <Link
-                  to='/'
-                  className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'
-                >
-                  Đơn mua
-                </Link>
-                <button className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'>
-                  Đăng xuất
-                </button>
-              </div>
-            }
-            className='ml-10 flex cursor-pointer items-center py-1 hover:text-gray-300'
-          >
-            <div className='mr-2 flex h-6 w-6 items-center justify-center'>
-              <svg enableBackground='new 0 0 15 15' viewBox='0 0 15 15' x='0' y='0'>
-                <g>
-                  <circle cx='7.5' cy='4.5' fill='none' r='3.8' strokeMiterlimit='10'></circle>
-                  <path
-                    d='m1.5 14.2c0-3.3 2.7-6 6-6s6 2.7 6 6'
-                    fill='none'
-                    strokeLinecap='round'
-                    strokeMiterlimit='10'
-                  ></path>
-                </g>
-              </svg>
-              <p className='text-white'>Nguyen</p>
+
+          {!isAuthenticated ? (
+            <div className='flex items-center'>
+              <Link to={path.register} className='mx-3 font-bold capitalize text-white hover:text-gray-300'>
+                Đăng ký
+              </Link>
+              <span className='h-4 border-r-[1px] border-r-white/40' />
+              <Link to={path.login} className=' mx-3 font-bold capitalize text-white hover:text-gray-300'>
+                Đăng nhập
+              </Link>
             </div>
-          </Popover>
+          ) : (
+            <Popover
+              renderPopover={
+                <div className='relative rounded-sm border border-gray-200 bg-white shadow-md'>
+                  <Link
+                    to={path.profile}
+                    className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'
+                  >
+                    Tài khoản của tôi
+                  </Link>
+                  <Link
+                    to='/'
+                    className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'
+                  >
+                    Đơn mua
+                  </Link>
+                  <button
+                    onClick={() => handleLogout()}
+                    className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'
+                  >
+                    Đăng xuất
+                  </button>
+                </div>
+              }
+              className='ml-10 flex cursor-pointer items-center py-1 hover:text-gray-300'
+            >
+              <div className='mr-2 flex h-6 w-fit items-center justify-center'>
+                <svg enableBackground='new 0 0 15 15' viewBox='0 0 15 15' x='0' y='0'>
+                  <g>
+                    <circle cx='7.5' cy='4.5' fill='none' r='3.8' strokeMiterlimit='10'></circle>
+                    <path
+                      d='m1.5 14.2c0-3.3 2.7-6 6-6s6 2.7 6 6'
+                      fill='none'
+                      strokeLinecap='round'
+                      strokeMiterlimit='10'
+                    ></path>
+                  </g>
+                </svg>
+                <p className='text-white'>{profile?.email}</p>
+              </div>
+            </Popover>
+          )}
         </div>
         <div className='mt-4 grid grid-cols-12 items-center justify-center gap-4'>
           <Link to='/' className='col-span-2'>
