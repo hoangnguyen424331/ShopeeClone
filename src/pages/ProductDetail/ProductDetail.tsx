@@ -5,14 +5,14 @@ import { useParams } from 'react-router-dom'
 import { productApi } from 'src/apis/product.api'
 import InputNumber from 'src/components/InputNumber'
 import ProductRating from 'src/components/ProductRating'
-import { formatCurrency, formatNumberToSocialStyle, rateSale } from 'src/utils/utils'
+import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from 'src/utils/utils'
 import { Product } from 'src/types/product.types'
 
 export default function ProductDetail() {
   const { id } = useParams()
   const { data: dataProductDetail } = useQuery({
-    queryKey: ['productDetail', id],
-    queryFn: () => productApi.getProductDetail(id as string)
+    queryKey: ['productDetail', getIdFromNameId(id as string)],
+    queryFn: () => productApi.getProductDetail(getIdFromNameId(id as string))
   })
   const product = dataProductDetail?.data.data
   const [currentIndexImages, setCurrentIndexImages] = useState([0, 5])
