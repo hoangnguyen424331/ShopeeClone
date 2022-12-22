@@ -11,7 +11,7 @@ interface Props {
 
 export default function Product({ product }: Props) {
   return (
-    <Link to={path.home}>
+    <Link to={`${path.home}${product._id}`}>
       <div className='overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.06rem] hover:shadow-md'>
         <div className='relative w-full pt-[100%]'>
           <img
