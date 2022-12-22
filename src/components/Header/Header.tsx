@@ -1,13 +1,24 @@
-import { Link } from 'react-router-dom'
-import Popover from '../Popover'
+import { createSearchParams, Link, useNavigate } from 'react-router-dom'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { omit } from 'lodash'
 import { useMutation } from '@tanstack/react-query'
-import { logoutAccount } from 'src/apis/auth.api'
+import { useForm } from 'react-hook-form'
 import { useCallback, useContext } from 'react'
+
+import Popover from '../Popover'
+import { logoutAccount } from 'src/apis/auth.api'
 import { AppContext } from 'src/contexts/app.context'
 import { path } from 'src/constants/path'
+import useQueryConfig from 'src/hooks/useQueryConfig'
+import { schema, Schema } from 'src/utils/rules'
+
+type FormData = Pick<Schema, 'name'>
+const nameSchema = schema.pick(['name'])
 
 export default function Header() {
   const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext)
+  const queryConfig = useQueryConfig()
+  const navigate = useNavigate()
 
   const logoutMutation = useMutation({
     mutationFn: logoutAccount,
@@ -21,6 +32,33 @@ export default function Header() {
     logoutMutation.mutate()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const { register, handleSubmit } = useForm<FormData>({
+    defaultValues: {
+      name: ''
+    },
+    resolver: yupResolver(nameSchema)
+  })
+
+  const onSubmitSearch = handleSubmit((data) => {
+    const config = queryConfig.order
+      ? omit(
+          {
+            ...queryConfig,
+            name: data.name
+          },
+          ['order', 'sort_by']
+        )
+      : {
+          ...queryConfig,
+          name: data.name
+        }
+
+    navigate({
+      pathname: path.home,
+      search: createSearchParams(config).toString()
+    })
+  })
 
   return (
     <div className='bg-[linear-gradient(-180deg,#f53d2d,#f63)] pb-5 pt-2'>
@@ -126,9 +164,10 @@ export default function Header() {
               </g>
             </svg>
           </Link>
-          <form className='col-span-9'>
+          <form className='col-span-9' onSubmit={onSubmitSearch}>
             <div className='flex rounded-sm bg-white p-1'>
               <input
+                {...register('name')}
                 placeholder='Free Ship Đơn từ 0Đ'
                 type='text'
                 className='w-full border-none bg-transparent px-3 py-2 text-black outline-none'
