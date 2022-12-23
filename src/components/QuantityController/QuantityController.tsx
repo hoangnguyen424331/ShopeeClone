@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import InputNumber, { InputNumberProps } from '../InputNumber'
 
 interface Props extends InputNumberProps {
@@ -14,10 +14,12 @@ export default function QuantityController({
   onIncrease,
   onDecrease,
   onType,
-  value,
+  value = '',
   classNameWrapper = 'ml-10',
   ...rest
 }: Props) {
+  const [localValue, setLocalValue] = useState<number>(Number(value || 0))
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let _value = Number(event.target.value)
     if (max !== undefined && _value > max) {
@@ -25,25 +27,27 @@ export default function QuantityController({
     } else if (_value < 1) {
       _value = 1
     }
-
     onType && onType(_value)
+    setLocalValue(_value)
   }
 
   const increase = useCallback(() => {
-    let _value = Number(value) + 1
+    let _value = Number(value || localValue) + 1
     if (max !== undefined && _value > max) {
       _value = max
     }
     onIncrease && onIncrease(_value)
-  }, [max, onIncrease, value])
+    setLocalValue(_value)
+  }, [localValue, max, onIncrease, value])
 
   const decrease = useCallback(() => {
-    let _value = Number(value) - 1
+    let _value = Number(value || localValue) - 1
     if (_value < 1) {
       _value = 1
     }
     onDecrease && onDecrease(_value)
-  }, [onDecrease, value])
+    setLocalValue(_value)
+  }, [localValue, onDecrease, value])
 
   return (
     <div className={'flex items-center ' + classNameWrapper}>
@@ -67,7 +71,7 @@ export default function QuantityController({
         classNameError='hidden'
         classNameInput='h-8 w-14 border-t border-b border-gray-300 p-1 text-center outline-none'
         onChange={handleChange}
-        value={value}
+        value={value || localValue}
         {...rest}
       />
       <button
