@@ -11,5 +11,14 @@ export const purchaseApi = {
   },
   getPurchases(params: { status: PurchaseListStatus }) {
     return http.get<SuccessResponse<Purchase[]>>(URL, { params })
+  },
+  buyProduct(body: { product_id: string; buy_count: number }[]) {
+    return http.post<SuccessResponse<Purchase[]>>(`${URL}/buy-products`, body)
+  },
+  updatePurchases(body: { product_id: string; buy_count: number }) {
+    return http.put<SuccessResponse<Purchase>>(`${URL}/update-purchase`, body)
+  },
+  deletePurchases(id: string[]) {
+    return http.delete<SuccessResponse<{ deleted_count: number }>>(`${URL}${id}`)
   }
 }
