@@ -6,7 +6,8 @@ import { productApi } from 'src/apis/product.api'
 import InputNumber from 'src/components/InputNumber'
 import ProductRating from 'src/components/ProductRating'
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from 'src/utils/utils'
-import { Product } from 'src/types/product.types'
+import { Product as ProductType, ProductListConfig } from 'src/types/product.types'
+import Product from '../ProductList/components/Product'
 
 export default function ProductDetail() {
   const { id } = useParams()
@@ -24,6 +25,17 @@ export default function ProductDetail() {
     [currentIndexImages, product]
   )
 
+  const queryConfig: ProductListConfig = { limit: 20, page: 1, category: product?.category._id }
+
+  const { data: productSimilar } = useQuery({
+    queryKey: ['productSimilar', queryConfig],
+    queryFn: () => productApi.getProducts(queryConfig),
+    //khi product có data thì query mới đc gọi
+    enabled: Boolean(product),
+    //đã list data ở trang list thì sang trang detail không list ra
+    staleTime: 3 * 60 * 1000
+  })
+
   useEffect(() => {
     if (product && product.images.length > 0) {
       setActiveImage(product.images[0])
@@ -31,7 +43,7 @@ export default function ProductDetail() {
   }, [product])
 
   const next = () => {
-    if (currentIndexImages[1] < (product as Product).images.length) {
+    if (currentIndexImages[1] < (product as ProductType).images.length) {
       setCurrentIndexImages((prev) => [prev[0] + 1, prev[1] + 1])
     }
   }
@@ -242,6 +254,20 @@ export default function ProductDetail() {
               }}
             />
           </div>
+        </div>
+      </div>
+      <div className='mt-8'>
+        <div className='container'>
+          <div className='uppercase text-gray-400'>CÓ THỂ BẠN CŨNG THÍCH</div>
+          {productSimilar && (
+            <div className='mt-6 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
+              {productSimilar.data.data.products.map((product) => (
+                <div className='col-span-1' key={product._id}>
+                  <Product product={product} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
