@@ -1,9 +1,9 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { produce } from 'immer'
 import { keyBy } from 'lodash'
-import React, { useCallback, useEffect, useState } from 'react'
-
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+
 import { purchaseApi } from 'src/apis/purchase.api'
 import Button from 'src/components/Button'
 import QuantityController from 'src/components/QuantityController'
@@ -24,10 +24,43 @@ export default function Cart() {
     queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart })
   })
   const dataPurchasesInCart = dataAddToCart?.data.data
-  const isAllChecked = extendedPurchases.every((purchase) => purchase.checked)
+
+  const isAllChecked = useMemo(() => extendedPurchases.every((purchase) => purchase.checked), [extendedPurchases])
+
+  const checkedPurchases = useMemo(() => extendedPurchases.filter((purchase) => purchase.checked), [extendedPurchases])
+
+  const totalCheckedPurchasePrice = useMemo(
+    () =>
+      checkedPurchases.reduce((result, current) => {
+        return result + current.product.price * current.buy_count
+      }, 0),
+    [checkedPurchases]
+  )
+
+  const totalCheckedPurchaseSavePrice = useMemo(
+    () =>
+      checkedPurchases.reduce((result, current) => {
+        return result + (current.product.price_before_discount - current.product.price) * current.buy_count
+      }, 0),
+    [checkedPurchases]
+  )
 
   const updatePurchaseMutation = useMutation({
     mutationFn: purchaseApi.updatePurchases,
+    onSuccess: () => {
+      refetch()
+    }
+  })
+
+  const deletePurchaseMutation = useMutation({
+    mutationFn: purchaseApi.deletePurchases,
+    onSuccess: () => {
+      refetch()
+    }
+  })
+
+  const buyProductMutation = useMutation({
+    mutationFn: purchaseApi.buyProduct,
     onSuccess: () => {
       refetch()
     }
@@ -88,6 +121,29 @@ export default function Cart() {
     )
   }
 
+  const handleDelete = useCallback(
+    (purchaseIndex: number) => {
+      const purchaseId = extendedPurchases[purchaseIndex]._id
+      deletePurchaseMutation.mutate([purchaseId])
+    },
+    [deletePurchaseMutation, extendedPurchases]
+  )
+
+  const handleDeleteManyPurchases = useCallback(() => {
+    const purchasesIds = checkedPurchases.map((purchase) => purchase._id)
+    deletePurchaseMutation.mutate(purchasesIds)
+  }, [deletePurchaseMutation, checkedPurchases])
+
+  const handleBuyPurchases = useCallback(() => {
+    if (checkedPurchases.length > 0) {
+      const body = checkedPurchases.map((purchases) => ({
+        product_id: purchases.product._id,
+        buy_count: purchases.buy_count
+      }))
+      buyProductMutation.mutate(body)
+    }
+  }, [buyProductMutation, checkedPurchases])
+
   return (
     <div className='bg-neutral-100 py-16'>
       <div className='container'>
@@ -103,7 +159,7 @@ export default function Cart() {
                           type='checkbox'
                           className='h-5 w-5 accent-orange'
                           checked={isAllChecked}
-                          onClick={() => handleCheckAll()}
+                          onChange={() => handleCheckAll()}
                         />
                       </div>
                       <div className='flex-grow text-black'>Sản phẩm</div>
@@ -196,7 +252,12 @@ export default function Cart() {
                             </span>
                           </div>
                           <div className='col-span-1'>
-                            <button className='bg-none text-black transition-colors hover:text-orange'>Xóa</button>
+                            <button
+                              onClick={() => handleDelete(index)}
+                              className='bg-none text-black transition-colors hover:text-orange'
+                            >
+                              Xóa
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -211,27 +272,33 @@ export default function Cart() {
                   <input
                     type='checkbox'
                     className='h-5 w-5 accent-orange'
-                    onClick={() => handleCheckAll()}
+                    onChange={() => handleCheckAll()}
                     checked={isAllChecked}
                   />
                 </div>
                 <button className='mx-3 border-none bg-none' onClick={() => handleCheckAll()}>
                   Chọn tất cả ({extendedPurchases.length})
                 </button>
-                <button className='mx-3 border-none bg-none'>Xóa</button>
+                <button className='mx-3 border-none bg-none' onClick={() => handleDeleteManyPurchases()}>
+                  Xóa
+                </button>
               </div>
               <div className='mt-5 flex flex-col sm:ml-auto sm:mt-0 sm:flex-row sm:items-center'>
                 <div>
                   <div className='flex items-center sm:justify-end'>
-                    <div>Tổng thanh toán </div>
-                    <div className='ml-2 text-2xl text-orange'>₫</div>
+                    <div>Tổng thanh toán ({checkedPurchases.length} sản phẩm)</div>
+                    <div className='ml-2 text-2xl text-orange'>₫{formatCurrency(totalCheckedPurchasePrice)}</div>
                   </div>
                   <div className='flex items-center text-sm sm:justify-end'>
                     <div className='text-gray-500'>Tiết kiệm</div>
-                    <div className='ml-6 text-orange'>₫</div>
+                    <div className='ml-6 text-orange'>₫{formatCurrency(totalCheckedPurchaseSavePrice)}</div>
                   </div>
                 </div>
-                <Button className='mt-5 flex h-10 w-52 items-center justify-center bg-red-500 text-sm uppercase text-white hover:bg-red-600 sm:ml-4 sm:mt-0'>
+                <Button
+                  onClick={() => handleBuyPurchases()}
+                  disabled={buyProductMutation.isLoading}
+                  className='mt-5 flex h-10 w-52 items-center justify-center bg-red-500 text-sm uppercase text-white hover:bg-red-600 sm:ml-4 sm:mt-0'
+                >
                   Mua hàng
                 </Button>
               </div>
