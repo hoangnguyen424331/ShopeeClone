@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { produce } from 'immer'
 import { keyBy } from 'lodash'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import { purchaseApi } from 'src/apis/purchase.api'
 import Button from 'src/components/Button'
@@ -18,12 +18,15 @@ interface ExtendedPurchases extends Purchase {
 }
 
 export default function Cart() {
+  const location = useLocation()
   const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchases[]>([])
   const { data: dataAddToCart, refetch } = useQuery({
     queryKey: ['addToCart', { status: purchasesStatus.inCart }],
     queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart })
   })
   const dataPurchasesInCart = dataAddToCart?.data.data
+
+  const choosePurchaseIdFromLocation = (location.state as { purchaseId: string | null }).purchaseId
 
   const isAllChecked = useMemo(() => extendedPurchases.every((purchase) => purchase.checked), [extendedPurchases])
 
@@ -71,14 +74,25 @@ export default function Cart() {
       // tạo 1 object từ 1 mảng có key là _id
       const extendedPurchaseObject = keyBy(prev, '_id')
       return (
-        dataPurchasesInCart?.map((purchase) => ({
-          ...purchase,
-          disable: false,
-          checked: Boolean(extendedPurchaseObject[purchase._id]?.checked)
-        })) || []
+        dataPurchasesInCart?.map((purchase) => {
+          const isChoosePurchaseFromLocation = choosePurchaseIdFromLocation === purchase._id
+          return {
+            ...purchase,
+            disable: false,
+            checked: isChoosePurchaseFromLocation || Boolean(extendedPurchaseObject[purchase._id]?.checked)
+          }
+        }) || []
       )
     })
-  }, [dataPurchasesInCart])
+  }, [choosePurchaseIdFromLocation, dataPurchasesInCart])
+
+  //f5 lại xoá state purchase mua ngay
+  useEffect(() => {
+    //component will unmount
+    return () => {
+      history.replaceState(null, '')
+    }
+  }, [])
 
   //Currying
   const handleCheck = (purchaseIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
