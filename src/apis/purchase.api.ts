@@ -19,6 +19,8 @@ export const purchaseApi = {
     return http.put<SuccessResponse<Purchase>>(`${URL}/update-purchase`, body)
   },
   deletePurchases(id: string[]) {
-    return http.delete<SuccessResponse<{ deleted_count: number }>>(`${URL}${id}`)
+    return http.delete<SuccessResponse<{ deleted_count: number }>>(`${URL}`, {
+      data: id
+    })
   }
 }
