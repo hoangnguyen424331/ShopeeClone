@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import DOMPurify from 'dompurify'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { productApi } from 'src/apis/product.api'
 import ProductRating from 'src/components/ProductRating'
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from 'src/utils/utils'
@@ -12,6 +12,7 @@ import { purchaseApi } from 'src/apis/purchase.api'
 import { queryClient } from 'src/main'
 import { purchasesStatus } from 'src/constants/purchase'
 import { toast } from 'react-toastify'
+import { path } from 'src/constants/path'
 
 export default function ProductDetail() {
   const { id } = useParams()
@@ -24,6 +25,7 @@ export default function ProductDetail() {
   const [activeImage, setActiveImage] = useState('')
   const imageRef = useRef<HTMLImageElement>(null)
   const [buyCount, setBuyCount] = useState(1)
+  const navigate = useNavigate()
 
   const currentImages = useMemo(
     () => (product ? product.images.slice(...currentIndexImages) : []),
@@ -42,12 +44,7 @@ export default function ProductDetail() {
   })
 
   const addToCartMutation = useMutation({
-    mutationFn: purchaseApi.addToCart,
-    onSuccess: (data) => {
-      // update lại api
-      queryClient.invalidateQueries({ queryKey: ['addToCart', { status: purchasesStatus.inCart }] }),
-        toast.success(data.data.message, { autoClose: 1000 })
-    }
+    mutationFn: purchaseApi.addToCart
   })
 
   useEffect(() => {
@@ -101,11 +98,33 @@ export default function ProductDetail() {
   }
 
   const addToCart = useCallback(() => {
-    addToCartMutation.mutate({
+    addToCartMutation.mutate(
+      {
+        buy_count: buyCount,
+        product_id: product?._id as string
+      },
+      {
+        onSuccess: (data) => {
+          // update lại api
+          queryClient.invalidateQueries({ queryKey: ['addToCart', { status: purchasesStatus.inCart }] }),
+            toast.success(data.data.message, { autoClose: 1000 })
+        }
+      }
+    )
+  }, [addToCartMutation, buyCount, product?._id])
+
+  const buyNow = useCallback(async () => {
+    const res = await addToCartMutation.mutateAsync({
       buy_count: buyCount,
       product_id: product?._id as string
     })
-  }, [addToCartMutation, buyCount, product?._id])
+    const purchase = res.data.data
+    navigate(path.cart, {
+      state: {
+        purchaseId: purchase._id
+      }
+    })
+  }, [addToCartMutation, buyCount, navigate, product?._id])
 
   if (!product) return null
 
@@ -239,7 +258,10 @@ export default function ProductDetail() {
                   </svg>
                   Thêm vào giỏ hàng
                 </button>
-                <button className='ml-4 flex h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90'>
+                <button
+                  onClick={() => buyNow()}
+                  className='ml-4 flex h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90'
+                >
                   Mua ngay
                 </button>
               </div>
