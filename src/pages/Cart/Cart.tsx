@@ -1,4 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
+import { produce } from 'immer'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 import { purchaseApi } from 'src/apis/purchase.api'
@@ -6,20 +8,55 @@ import Button from 'src/components/Button'
 import QuantityController from 'src/components/QuantityController'
 import { path } from 'src/constants/path'
 import { purchasesStatus } from 'src/constants/purchase'
+import { Purchase } from 'src/types/purchase.type'
 import { formatCurrency, generateNameId } from 'src/utils/utils'
 
+interface ExtendedPurchases extends Purchase {
+  disable: boolean
+  checked: boolean
+}
+
 export default function Cart() {
+  const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchases[]>([])
   const { data: dataAddToCart } = useQuery({
     queryKey: ['addToCart', { status: purchasesStatus.inCart }],
     queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart })
   })
   const dataPurchasesInCart = dataAddToCart?.data.data
+  const isAllChecked = extendedPurchases.every((purchase) => purchase.checked)
 
-  if (!dataPurchasesInCart) return
+  useEffect(() => {
+    setExtendedPurchases(
+      dataPurchasesInCart?.map((purchase) => ({
+        ...purchase,
+        disable: false,
+        checked: false
+      })) || []
+    )
+  }, [dataPurchasesInCart])
+
+  //Currying
+  const handleCheck = (productIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setExtendedPurchases(
+      produce((draft) => {
+        draft[productIndex].checked = event.target.checked
+      })
+    )
+  }
+
+  const handleCheckAll = useCallback(() => {
+    setExtendedPurchases((prev) =>
+      prev.map((purchase) => ({
+        ...purchase,
+        checked: !isAllChecked
+      }))
+    )
+  }, [isAllChecked])
+
   return (
     <div className='bg-neutral-100 py-16'>
       <div className='container'>
-        {dataPurchasesInCart?.length > 0 ? (
+        {extendedPurchases?.length > 0 ? (
           <>
             <div className='overflow-auto'>
               <div className='min-w-[1000px]'>
@@ -27,7 +64,12 @@ export default function Cart() {
                   <div className='col-span-6'>
                     <div className='flex items-center'>
                       <div className='flex flex-shrink-0 items-center justify-center pr-3'>
-                        <input type='checkbox' className='h-5 w-5 accent-orange' />
+                        <input
+                          type='checkbox'
+                          className='h-5 w-5 accent-orange'
+                          checked={isAllChecked}
+                          onClick={() => handleCheckAll()}
+                        />
                       </div>
                       <div className='flex-grow text-black'>Sản phẩm</div>
                     </div>
@@ -42,7 +84,7 @@ export default function Cart() {
                   </div>
                 </div>
                 <div className='my-3 rounded-sm bg-white p-5 shadow'>
-                  {dataPurchasesInCart?.map((purchase) => (
+                  {extendedPurchases?.map((purchase, index) => (
                     <div
                       key={purchase._id}
                       className='mb-5 grid grid-cols-12 items-center rounded-sm border border-gray-200 bg-white py-5 px-4 text-center text-sm text-gray-500 first:mt-0'
@@ -50,7 +92,12 @@ export default function Cart() {
                       <div className='col-span-6'>
                         <div className='flex'>
                           <div className='flex flex-shrink-0 items-center justify-center pr-3'>
-                            <input type='checkbox' className='h-5 w-5 accent-orange' />
+                            <input
+                              type='checkbox'
+                              className='h-5 w-5 cursor-pointer accent-orange'
+                              checked={purchase.checked}
+                              onChange={handleCheck(index)}
+                            />
                           </div>
                           <div className='flex-grow'>
                             <div className='flex'>
@@ -113,9 +160,16 @@ export default function Cart() {
             <div className='sticky bottom-0 z-10 mt-8 flex flex-col rounded-sm border border-gray-100 bg-white p-5 shadow sm:flex-row sm:items-center'>
               <div className='flex items-center'>
                 <div className='flex flex-shrink-0 items-center justify-center pr-3'>
-                  <input type='checkbox' className='h-5 w-5 accent-orange' />
+                  <input
+                    type='checkbox'
+                    className='h-5 w-5 accent-orange'
+                    onClick={() => handleCheckAll()}
+                    checked={isAllChecked}
+                  />
                 </div>
-                <button className='mx-3 border-none bg-none'>Chọn tất cả</button>
+                <button className='mx-3 border-none bg-none' onClick={() => handleCheckAll()}>
+                  Chọn tất cả ({extendedPurchases.length})
+                </button>
                 <button className='mx-3 border-none bg-none'>Xóa</button>
               </div>
               <div className='mt-5 flex flex-col sm:ml-auto sm:mt-0 sm:flex-row sm:items-center'>
