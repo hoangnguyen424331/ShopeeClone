@@ -23,7 +23,7 @@ export default function Product({ product }: Props) {
         <div className='overflow-hidden p-2'>
           <div className='min-h-[32px] text-xs line-clamp-2'>{product.name}</div>
           <div className='mt-3 flex items-center'>
-            <div className='m-w-[50%] truncate text-sm text-gray-500 line-through'>
+            <div className='max-w-[50%] truncate text-sm text-gray-500 line-through'>
               ₫{formatCurrency(product.price_before_discount)}
             </div>
             <div className='ml-1 truncate text-orange'>
