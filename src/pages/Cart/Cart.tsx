@@ -97,17 +97,13 @@ export default function Cart() {
     }
   }, [])
 
-  //Currying
-  const handleCheck = useCallback(
-    (purchaseIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setExtendedPurchases(
-        produce((draft) => {
-          draft[purchaseIndex].checked = event.target.checked
-        })
-      )
-    },
-    [setExtendedPurchases]
-  )
+  const handleCheck = (purchaseIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setExtendedPurchases(
+      produce((draft) => {
+        draft[purchaseIndex].checked = event.target.checked
+      })
+    )
+  }
 
   const handleCheckAll = useCallback(() => {
     setExtendedPurchases((prev) =>
@@ -129,17 +125,20 @@ export default function Cart() {
     [setExtendedPurchases]
   )
 
-  const handleQuantity = (purchaseIndex: number, value: number, enable: boolean) => {
-    if (enable) {
-      const purchase = extendedPurchases[purchaseIndex]
-      setExtendedPurchases(
-        produce((draft) => {
-          draft[purchaseIndex].disabled = true
-        })
-      )
-      updatePurchaseMutation.mutate({ product_id: purchase.product._id, buy_count: value })
-    }
-  }
+  const handleQuantity = useCallback(
+    (purchaseIndex: number, value: number, enable: boolean) => {
+      if (enable) {
+        const purchase = extendedPurchases[purchaseIndex]
+        setExtendedPurchases(
+          produce((draft) => {
+            draft[purchaseIndex].disabled = true
+          })
+        )
+        updatePurchaseMutation.mutate({ product_id: purchase.product._id, buy_count: value })
+      }
+    },
+    [extendedPurchases, setExtendedPurchases, updatePurchaseMutation]
+  )
 
   //Currying thì ko được dùng trong useCallback
   const handleDelete = (purchaseIndex: number) => () => {
