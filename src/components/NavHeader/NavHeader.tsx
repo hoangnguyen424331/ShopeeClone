@@ -7,6 +7,7 @@ import { queryClient } from 'src/main'
 import { useMutation } from '@tanstack/react-query'
 import { purchasesStatus } from 'src/constants/purchase'
 import { logoutAccount } from 'src/apis/auth.api'
+import userImage from 'src/assets/images/user.svg'
 
 export default function NavHeader() {
   const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext)
@@ -104,20 +105,10 @@ export default function NavHeader() {
           }
           className='ml-10 flex cursor-pointer items-center py-1 hover:text-gray-300'
         >
-          <div className='mr-2 flex h-6 w-fit items-center justify-center'>
-            <svg enableBackground='new 0 0 15 15' viewBox='0 0 15 15' x='0' y='0'>
-              <g>
-                <circle cx='7.5' cy='4.5' fill='none' r='3.8' strokeMiterlimit='10'></circle>
-                <path
-                  d='m1.5 14.2c0-3.3 2.7-6 6-6s6 2.7 6 6'
-                  fill='none'
-                  strokeLinecap='round'
-                  strokeMiterlimit='10'
-                ></path>
-              </g>
-            </svg>
-            <p className='text-white'>{profile?.email}</p>
+          <div className='mr-2 h-6 w-6'>
+            <img src={profile?.avatar || userImage} alt='avatar' className='h-full w-full rounded-full object-cover' />
           </div>
+          <p className='text-white'>{profile?.email}</p>
         </Popover>
       )}
     </div>
