@@ -17,7 +17,7 @@ export const userApi = {
     return http.put<SuccessResponse<User>>(URL, body)
   },
   uploadAvatar(body: FormData) {
-    return http.post<SuccessResponse<User>>(`${URL}/upload-avatar`, body, {
+    return http.post<SuccessResponse<string>>(`${URL}/upload-avatar`, body, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
