@@ -9,10 +9,10 @@ import Cart from './pages/Cart'
 import Login from './pages/Login'
 import ProductDetail from './pages/ProductDetail'
 import ProductList from './pages/ProductList'
-import Profile from './pages/Profile'
 import Register from './pages/Register'
 import UserLayout from './pages/User/Layouts/UserLayout'
 import ChangePass from './pages/User/pages/ChangePass'
+import Profile from './pages/User/pages/Profile'
 
 // chỉ có Login thì mới vào được
 function ProtectedRoute() {
