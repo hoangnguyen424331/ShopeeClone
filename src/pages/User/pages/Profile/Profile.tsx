@@ -1,14 +1,14 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { userApi } from 'src/apis/user.api'
 import Button from 'src/components/Button'
 import DateSelect from 'src/components/DateSelect'
 import Input from 'src/components/Input'
+import InputFile from 'src/components/InputFile'
 import InputNumber from 'src/components/InputNumber'
-import { config } from 'src/constants/config'
 import { AppContext } from 'src/contexts/app.context'
 import { ErrorResponse } from 'src/types/utils.type'
 import { setProfileToLs } from 'src/utils/auth'
@@ -25,7 +25,6 @@ type FormDataError = Omit<FormData, 'date_of_birth'> & {
 }
 
 export default function Profile() {
-  const fileInputRef = useRef<HTMLInputElement>(null)
   const [fileImage, setFileImage] = useState<File>()
   const previewImage = useMemo(() => {
     return fileImage ? URL.createObjectURL(fileImage) : ''
@@ -110,20 +109,9 @@ export default function Profile() {
     }
   })
 
-  const onFileChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const fileFromLocal = event.target.files?.[0]
-    if (fileFromLocal && (fileFromLocal?.size >= config.maxSizeUploadAvatar || !fileFromLocal.type.includes('image'))) {
-      toast.error(`Dung lượng file tối đa 1 MB. Định dạng:.JPEG, .PNG`, {
-        position: 'top-center'
-      })
-    } else {
-      setFileImage(fileFromLocal)
-    }
-  }, [])
-
-  const handleUpload = useCallback(() => {
-    fileInputRef.current?.click()
-  }, [])
+  const handleChangeFile = (fileImage?: File) => {
+    setFileImage(fileImage)
+  }
 
   return (
     <div className='pd-20 rounded-sm bg-white px-7 shadow'>
@@ -226,24 +214,7 @@ export default function Profile() {
                   className='h-full w-full rounded-full object-cover'
                 />
               </div>
-              <input
-                className='hidden'
-                type='file'
-                accept='.jpg,.jpeg,.png'
-                ref={fileInputRef}
-                onChange={(event) => onFileChange(event)}
-                onClick={(event) => {
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  ;(event.target as any).value = null
-                }}
-              />
-              <button
-                onClick={() => handleUpload()}
-                type='button'
-                className='flex h-10 items-center justify-end rounded-sm border bg-white px-6 text-sm text-gray-600 shadow-sm'
-              >
-                Chọn ảnh
-              </button>
+              <InputFile onChange={handleChangeFile} />
               <div className='mt-3 text-gray-400'>
                 <div>Dụng lượng file tối đa 1 MB</div>
                 <div>Định dạng:.JPEG, .PNG</div>

@@ -12,6 +12,7 @@ import ProductList from './pages/ProductList'
 import Register from './pages/Register'
 import UserLayout from './pages/User/Layouts/UserLayout'
 import ChangePass from './pages/User/pages/ChangePass'
+import HistoryPurchase from './pages/User/pages/HistoryPurchase'
 import Profile from './pages/User/pages/Profile'
 
 // chỉ có Login thì mới vào được
@@ -71,6 +72,10 @@ export default function useRouteElements() {
             {
               path: path.changePass,
               element: <ChangePass />
+            },
+            {
+              path: path.historyPurchase,
+              element: <HistoryPurchase />
             }
           ]
         }
