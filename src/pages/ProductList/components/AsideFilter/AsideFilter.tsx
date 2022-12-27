@@ -12,7 +12,7 @@ import { Schema, schema } from 'src/utils/rules'
 import { NoUndefinedField } from 'src/types/utils.type'
 import RatingStarts from '../RatingStarts'
 import { useCallback } from 'react'
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 
 interface Props {
   categories: Category[]
