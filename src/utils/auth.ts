@@ -8,12 +8,21 @@ export const saveAccessTokenToCookie = (access_token: string) => {
   Cookies.set('access_token', access_token)
 }
 
+export const setRefreshTokenToCookie = (refresh_token: string) => {
+  Cookies.set('refresh_token', refresh_token)
+}
+
 export const getAccessTokenFromCookie = () => {
   return Cookies.get('access_token') || ''
 }
 
+export const getRefreshTokenFromCookie = () => {
+  return Cookies.get('refresh_token') || ''
+}
+
 export const clearAccessTokenFromCookie = () => {
   Cookies.remove('access_token')
+  Cookies.remove('refresh_token')
   const learCookieEvent = new Event('clearCookie')
   cookieEventTarget.dispatchEvent(learCookieEvent)
 }
