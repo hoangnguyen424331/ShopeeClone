@@ -4,12 +4,13 @@ import { useTranslation } from 'react-i18next'
 import { path } from 'src/constants/path'
 import { AppContext } from 'src/contexts/app.context'
 import Popover from '../Popover'
-import { queryClient } from 'src/main'
+
 import { useMutation } from '@tanstack/react-query'
 import { purchasesStatus } from 'src/constants/purchase'
 import { logoutAccount } from 'src/apis/auth.api'
 import { getAvatarUrl } from 'src/utils/utils'
 import { locales } from 'src/i18n/i18n'
+import { queryClient } from 'src/App'
 
 export default function NavHeader() {
   const { i18n } = useTranslation()
