@@ -5,15 +5,15 @@ import { path } from 'src/constants/path'
 import { AppContext } from 'src/contexts/app.context'
 import Popover from '../Popover'
 
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { purchasesStatus } from 'src/constants/purchase'
 import { logoutAccount } from 'src/apis/auth.api'
 import { getAvatarUrl } from 'src/utils/utils'
 import { locales } from 'src/i18n/i18n'
-import { queryClient } from 'src/App'
 
 export default function NavHeader() {
   const { i18n } = useTranslation()
+  const queryClient = useQueryClient()
   const currentLanguage = locales[i18n.language as keyof typeof locales]
 
   const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext)
@@ -107,7 +107,7 @@ export default function NavHeader() {
                 Tài khoản của tôi
               </Link>
               <Link
-                to={path.home}
+                to={path.historyPurchase}
                 className='block w-full bg-white py-3 px-4 text-left hover:bg-slate-100 hover:text-cyan-500'
               >
                 Đơn mua

@@ -1,5 +1,5 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import React, { useCallback, useEffect, useMemo, useRef, useState, useContext } from 'react'
 import DOMPurify from 'dompurify'
 import { useNavigate, useParams } from 'react-router-dom'
 import { productApi } from 'src/apis/product.api'
@@ -14,10 +14,12 @@ import { toast } from 'react-toastify'
 import { path } from 'src/constants/path'
 import { Helmet } from 'react-helmet-async'
 import { convert } from 'html-to-text'
-import { queryClient } from 'src/App'
+import { AppContext } from 'src/contexts/app.context'
 
 export default function ProductDetail() {
   const { id } = useParams()
+  const queryClient = useQueryClient()
+  const { isAuthenticated } = useContext(AppContext)
   const { data: dataProductDetail } = useQuery({
     queryKey: ['productDetail', getIdFromNameId(id as string)],
     queryFn: () => productApi.getProductDetail(getIdFromNameId(id as string))
@@ -100,33 +102,41 @@ export default function ProductDetail() {
   }
 
   const addToCart = useCallback(() => {
-    addToCartMutation.mutate(
-      {
-        buy_count: buyCount,
-        product_id: product?._id as string
-      },
-      {
-        onSuccess: (data) => {
-          // update lại api
-          queryClient.invalidateQueries({ queryKey: ['addToCart', { status: purchasesStatus.inCart }] }),
-            toast.success(data.data.message, { autoClose: 1000 })
+    if (isAuthenticated === false) {
+      navigate(path.login)
+    } else {
+      addToCartMutation.mutate(
+        {
+          buy_count: buyCount,
+          product_id: product?._id as string
+        },
+        {
+          onSuccess: (data) => {
+            // update lại api
+            queryClient.invalidateQueries({ queryKey: ['addToCart', { status: purchasesStatus.inCart }] }),
+              toast.success(data.data.message, { autoClose: 1000 })
+          }
         }
-      }
-    )
-  }, [addToCartMutation, buyCount, product?._id])
+      )
+    }
+  }, [addToCartMutation, buyCount, isAuthenticated, navigate, product?._id, queryClient])
 
   const buyNow = useCallback(async () => {
-    const res = await addToCartMutation.mutateAsync({
-      buy_count: buyCount,
-      product_id: product?._id as string
-    })
-    const purchase = res.data.data
-    navigate(path.cart, {
-      state: {
-        purchaseId: purchase._id
-      }
-    })
-  }, [addToCartMutation, buyCount, navigate, product?._id])
+    if (isAuthenticated === false) {
+      navigate(path.login)
+    } else {
+      const res = await addToCartMutation.mutateAsync({
+        buy_count: buyCount,
+        product_id: product?._id as string
+      })
+      const purchase = res.data.data
+      navigate(path.cart, {
+        state: {
+          purchaseId: purchase._id
+        }
+      })
+    }
+  }, [addToCartMutation, buyCount, isAuthenticated, navigate, product?._id])
 
   if (!product) return null
 

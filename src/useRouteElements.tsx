@@ -14,7 +14,7 @@ const ProductDetail = lazy(() => import('./pages/ProductDetail'))
 const ProductList = lazy(() => import('./pages/ProductList'))
 const Register = lazy(() => import('./pages/Register'))
 const ChangePass = lazy(() => import('./pages/User/pages/ChangePass'))
-const HistoryPurchase = lazy(() => import('./pages/Cart'))
+const HistoryPurchase = lazy(() => import('./pages/User/pages/HistoryPurchase'))
 const Profile = lazy(() => import('./pages/User/pages/Profile'))
 
 // chỉ có Login thì mới vào được
