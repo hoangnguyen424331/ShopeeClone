@@ -9,12 +9,12 @@ import { Product as ProductType, ProductListConfig } from 'src/types/product.typ
 import Product from '../ProductList/components/Product'
 import QuantityController from 'src/components/QuantityController'
 import { purchaseApi } from 'src/apis/purchase.api'
-import { queryClient } from 'src/main'
 import { purchasesStatus } from 'src/constants/purchase'
 import { toast } from 'react-toastify'
 import { path } from 'src/constants/path'
 import { Helmet } from 'react-helmet-async'
 import { convert } from 'html-to-text'
+import { queryClient } from 'src/App'
 
 export default function ProductDetail() {
   const { id } = useParams()

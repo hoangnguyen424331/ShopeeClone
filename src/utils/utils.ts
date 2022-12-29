@@ -9,6 +9,7 @@ export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
   return axios.isAxiosError(error)
 }
 
+//Lỗi 422
 export function isAxiosUnprocessableEntity<FormError>(error: unknown): error is AxiosError<FormError> {
   return isAxiosError(error) && error.response?.status === HttpStatusCode.UnprocessableEntity
 }
