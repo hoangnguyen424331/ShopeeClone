@@ -1,4 +1,4 @@
-import { Product } from './product.types'
+import { Product } from './product.type'
 
 export type PurchaseStatus = -1 | 1 | 2 | 3 | 4 | 5
 

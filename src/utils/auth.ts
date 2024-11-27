@@ -1,43 +1,32 @@
-import Cookies from 'js-cookie'
-import { User } from 'src/types/user.types'
+import { User } from 'src/types/user.type'
 
-export const localStorageEventTarget = new EventTarget()
-export const cookieEventTarget = new EventTarget()
+export const LocalStorageEventTarget = new EventTarget()
 
-export const saveAccessTokenToCookie = (access_token: string) => {
-  Cookies.set('access_token', access_token)
+export const setAccessTokenToLS = (access_token: string) => {
+  localStorage.setItem('access_token', access_token)
 }
 
-export const setRefreshTokenToCookie = (refresh_token: string) => {
-  Cookies.set('refresh_token', refresh_token)
+export const setRefreshTokenToLS = (refresh_token: string) => {
+  localStorage.setItem('refresh_token', refresh_token)
 }
 
-export const getAccessTokenFromCookie = () => {
-  return Cookies.get('access_token') || ''
+export const clearLS = () => {
+  localStorage.removeItem('access_token')
+  localStorage.removeItem('refresh_token')
+  localStorage.removeItem('profile')
+  const clearLSEvent = new Event('clearLS')
+  LocalStorageEventTarget.dispatchEvent(clearLSEvent)
 }
 
-export const getRefreshTokenFromCookie = () => {
-  return Cookies.get('refresh_token') || ''
-}
+export const getAccessTokenFromLS = () => localStorage.getItem('access_token') || ''
 
-export const clearAccessTokenFromCookie = () => {
-  Cookies.remove('access_token')
-  Cookies.remove('refresh_token')
-  const learCookieEvent = new Event('clearCookie')
-  cookieEventTarget.dispatchEvent(learCookieEvent)
-}
+export const getRefreshTokenFromLS = () => localStorage.getItem('refresh_token') || ''
 
-export const getProfileFromLs = () => {
+export const getProfileFromLS = () => {
   const result = localStorage.getItem('profile')
   return result ? JSON.parse(result) : null
 }
 
-export const setProfileToLs = (profile: User) => {
+export const setProfileToLS = (profile: User) => {
   localStorage.setItem('profile', JSON.stringify(profile))
-}
-
-export const clearProfileFromLs = () => {
-  localStorage.removeItem('profile')
-  const learLsEvent = new Event('clearLs')
-  localStorageEventTarget.dispatchEvent(learLsEvent)
 }

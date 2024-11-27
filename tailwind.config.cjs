@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const plugin = require('tailwindcss/plugin')
 
 /** @type {import('tailwindcss').Config} */
@@ -25,7 +24,6 @@ module.exports = {
           paddingRight: theme('spacing.4')
         }
       })
-    }),
-    require('@tailwindcss/line-clamp')
+    })
   ]
 }

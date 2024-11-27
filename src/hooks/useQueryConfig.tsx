@@ -1,9 +1,8 @@
+import { ProductListConfig } from 'src/types/product.type'
 import omitBy from 'lodash/omitBy'
 import isUndefined from 'lodash/isUndefined'
-import useQueryParams from './useQueryParam'
-import { ProductListConfig } from 'src/types/product.types'
+import useQueryParams from './useQueryParams'
 
-// chỉ lấy những query param tránh người dùng nhập đại
 export type QueryConfig = {
   [key in keyof ProductListConfig]: string
 }

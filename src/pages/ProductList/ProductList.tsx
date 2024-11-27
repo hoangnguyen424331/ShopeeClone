@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
-import { categoryApi } from 'src/apis/category.api'
-import { productApi } from 'src/apis/product.api'
+import categoryApi from 'src/apis/category.api'
+import productApi from 'src/apis/product.api'
 import Pagination from 'src/components/Pagination'
 import useQueryConfig from 'src/hooks/useQueryConfig'
-import { ProductListConfig } from 'src/types/product.types'
+import { ProductListConfig } from 'src/types/product.type'
 import AsideFilter from './components/AsideFilter'
-import Product from './components/Product'
+import Product from './components/Product/Product'
 import SortProductList from './components/SortProductList'
 
 export default function ProductList() {
@@ -17,7 +17,7 @@ export default function ProductList() {
     queryFn: () => {
       return productApi.getProducts(queryConfig as ProductListConfig)
     },
-    keepPreviousData: true
+    staleTime: 3 * 60 * 1000
   })
 
   const { data: categoriesData } = useQuery({
@@ -30,8 +30,8 @@ export default function ProductList() {
   return (
     <div className='bg-gray-200 py-6'>
       <Helmet>
-        <title>Shopee Clone</title>
-        <meta name='description' content='Shopee Clone' />
+        <title>Trang chủ | Shopee</title>
+        <meta name='description' content='Trang chủ dự án Shopee Clone' />
       </Helmet>
       <div className='container'>
         {productsData && (
@@ -42,8 +42,8 @@ export default function ProductList() {
             <div className='col-span-9'>
               <SortProductList queryConfig={queryConfig} pageSize={productsData.data.data.pagination.page_size} />
               <div className='mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
-                {productsData?.data.data.products.map((product) => (
-                  <div key={product._id}>
+                {productsData.data.data.products.map((product) => (
+                  <div className='col-span-1' key={product._id}>
                     <Product product={product} />
                   </div>
                 ))}
