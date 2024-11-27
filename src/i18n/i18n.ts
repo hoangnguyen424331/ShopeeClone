@@ -23,16 +23,13 @@ export const resources = {
 
 export const defaultNS = 'product'
 
-// eslint-disable-next-line import/no-named-as-default-member
 i18n.use(initReactI18next).init({
   resources,
-  //ngôn ngữ mặc định
   lng: 'vi',
   ns: ['home', 'product'],
-  //trường hợp ko xác định được ngôn ngữ
   fallbackLng: 'vi',
   defaultNS,
   interpolation: {
-    escapeValue: false // react already safes from xss
+    escapeValue: false
   }
 })

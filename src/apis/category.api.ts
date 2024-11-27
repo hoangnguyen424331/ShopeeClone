@@ -1,11 +1,14 @@
-import { Category } from 'src/types/category.types'
-import { SuccessResponse } from 'src/types/utils.type'
 import http from 'src/utils/http'
 
-const URL = '/categories'
+import { SuccessResponse } from 'src/types/utils.type'
+import { Category } from 'src/types/category.type'
 
-export const categoryApi = {
+const URL = 'categories'
+
+const categoryApi = {
   getCategories() {
     return http.get<SuccessResponse<Category[]>>(URL)
   }
 }
+
+export default categoryApi

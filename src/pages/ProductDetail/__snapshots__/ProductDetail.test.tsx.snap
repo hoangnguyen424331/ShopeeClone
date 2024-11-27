@@ -1,25 +1,25 @@
 // Vitest Snapshot v1
 
-exports[`ProductDetail > Render Ui Product Detail 1`] = `
+exports[`ProductDetail > Render UI ProductDetail 1`] = `
 <body>
   <div>
     <div>
       <div
-        class="bg-[linear-gradient(-180deg,#f53d2d,#f63)] pb-5 pt-2"
+        class="bg-[linear-gradient(-180deg,#f53d2d,#f63)] pb-5 pt-2 text-white"
       >
         <div
           class="container"
         >
           <div
-            class="flex items-center justify-end"
+            class="flex justify-end"
           >
-            <span
+            <div
               class="flex cursor-pointer items-center py-1 hover:text-white/70"
             >
               <svg
                 class="h-5 w-5"
                 fill="none"
-                stroke="white"
+                stroke="currentColor"
                 stroke-width="1.5"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
@@ -31,14 +31,14 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                 />
               </svg>
               <span
-                class="mx-1 text-white"
+                class="mx-1"
               >
                 Tiếng Việt
               </span>
               <svg
                 class="h-5 w-5"
                 fill="none"
-                stroke="white"
+                stroke="currentColor"
                 stroke-width="1.5"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
@@ -49,21 +49,21 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                   stroke-linejoin="round"
                 />
               </svg>
-            </span>
+            </div>
             <div
               class="flex items-center"
             >
               <a
-                class="mx-3 font-bold capitalize text-white hover:text-gray-300"
+                class="mx-3 capitalize hover:text-white/70"
                 href="/register"
               >
                 Đăng ký
               </a>
-              <span
+              <div
                 class="h-4 border-r-[1px] border-r-white/40"
               />
               <a
-                class=" mx-3 font-bold capitalize text-white hover:text-gray-300"
+                class="mx-3 capitalize hover:text-white/70"
                 href="/login"
               >
                 Đăng nhập
@@ -71,14 +71,14 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
             </div>
           </div>
           <div
-            class="mt-4 grid grid-cols-12 items-center justify-center gap-4"
+            class="mt-4 grid grid-cols-12 items-end gap-4"
           >
             <a
               class="col-span-2"
               href="/"
             >
               <svg
-                class="h-11 fill-white"
+                class="h-11 w-full fill-white"
                 viewBox="0 0 192 65"
               >
                 <g
@@ -97,18 +97,18 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                 class="flex rounded-sm bg-white p-1"
               >
                 <input
-                  class="w-full border-none bg-transparent px-3 py-2 text-black outline-none"
+                  class="flex-grow border-none bg-transparent px-3 py-2 text-black outline-none"
                   name="name"
-                  placeholder="Free Ship Đơn từ 0Đ"
+                  placeholder="Free Ship Đơn Từ 0Đ"
                   type="text"
                 />
                 <button
-                  class="rounded-sm bg-orange py-2 px-6 hover:opacity-90"
+                  class="flex-shrink-0 rounded-sm bg-orange py-2 px-6 hover:opacity-90"
                 >
                   <svg
                     class="h-6 w-6"
                     fill="none"
-                    stroke="white"
+                    stroke="currentColor"
                     stroke-width="1.5"
                     viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
@@ -133,7 +133,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                   <svg
                     class="h-8 w-8"
                     fill="none"
-                    stroke="white"
+                    stroke="currentColor"
                     stroke-width="1.5"
                     viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
@@ -170,7 +170,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                 >
                   <img
                     alt="Điện thoại OPPO A12 (3GB/32GB) - Hàng chính hãng"
-                    class=" absolute top-0 left-0 h-full w-full bg-white object-cover"
+                    class="absolute top-0 left-0 h-full w-full bg-white object-cover"
                     src="https://api-ecom.duthanhduoc.com/images/aa374023-7a5b-46ea-aca3-dad1b29fb015.jpg"
                   />
                 </div>
@@ -473,57 +473,49 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                     </div>
                   </div>
                   <div
-                    class="mx-4 h-4 w-[1px] bg-gray-200"
+                    class="mx-4 h-4 w-[1px] bg-gray-300"
                   />
-                  <div
-                    class=""
-                  >
+                  <div>
                     <span>
                       6,8k
                     </span>
                     <span
                       class="ml-1 text-gray-500"
                     >
-                      Đánh giá
+                      Đã bán
                     </span>
                   </div>
                 </div>
                 <div
                   class="mt-8 flex items-center bg-gray-50 px-5 py-4"
                 >
-                  <span
+                  <div
                     class="text-gray-500 line-through"
                   >
                     ₫
                     3.490.000
-                  </span>
-                  <p
-                    class="mx-3 text-3xl font-medium text-orange"
+                  </div>
+                  <div
+                    class="ml-3 text-3xl font-medium text-orange"
                   >
                     ₫
                     2.590.000
-                  </p>
+                  </div>
                   <div
-                    class="flex items-center bg-orange px-1 text-xs text-white"
+                    class="ml-4 rounded-sm bg-orange px-1 py-[2px] text-xs font-semibold uppercase text-white"
                   >
-                    <span>
-                      26%
-                    </span>
-                    <p
-                      class="ml-1 uppercase"
-                    >
-                      Giảm
-                    </p>
+                    26%
+                     giảm
                   </div>
                 </div>
                 <div
                   class="mt-8 flex items-center"
                 >
-                  <span
+                  <div
                     class="capitalize text-gray-500"
                   >
                     Số lượng
-                  </span>
+                  </div>
                   <div
                     class="flex items-center ml-10"
                   >
@@ -546,7 +538,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                       </svg>
                     </button>
                     <div
-                      class="relative "
+                      class=""
                     >
                       <input
                         class="h-8 w-14 border-t border-b border-gray-300 p-1 text-center outline-none"
@@ -579,7 +571,8 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                     class="ml-6 text-sm text-gray-500"
                   >
                     73
-                     Sản phẩm có sẵn
+                     
+                    Sản phẩm có sẵn
                   </div>
                 </div>
                 <div
@@ -640,7 +633,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                     Thêm vào giỏ hàng
                   </button>
                   <button
-                    class="ml-4 flex h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90"
+                    class="fkex ml-4 h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90"
                   >
                     Mua ngay
                   </button>
@@ -650,207 +643,211 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
           </div>
         </div>
         <div
-          class="container"
+          class="mt-8"
         >
           <div
-            class="mt-8 bg-white py-4 shadow"
+            class="container"
           >
             <div
-              class="rounded bg-gray-50 p-4 text-lg capitalize text-slate-700"
+              class=" bg-white p-4 shadow"
             >
-              Mô tả sản phẩm
-            </div>
-            <div
-              class="mx-4 mt-12 mb-4 text-sm leading-loose"
-            >
-              <div>
-                <p>
-                  Thể hiện cá tính của bạn bằng thiết kế kim cương 3D độc đáo của OPPO A12, cùng với màn hình lớn “giọt nước” tuyệt mỹ và camera kép sành điệu, bạn sẽ luôn vui vẻ năng động suốt cả ngày.
-                </p>
-                <p>
-                  Thiết kế siêu mỏng nhẹ, họa tiết kim cương 3D ấn tượng
-                  <br />
-                  OPPO A12 sở hữu thiết kế không chỉ đẹp phá cách mà còn rất dễ dàng để sử dụng trên tay. Trọng lượng cực nhẹ 165gram, độ mỏng chỉ 8,3mm kết hợp với những đường bo cong khéo léo giúp điện thoại vô cùng gọn nhẹ, mượt mà trong lòng bàn tay. Kiểu dáng của OPPO A12 đặc biệt ấn tượng nhờ điểm nhấn là mặt lưng họa tiết 3D kim cương độc đáo. Ở mỗi góc nhìn khác nhau, bạn sẽ thấy một vẻ đẹp khác nhau, giúp chiếc điện thoại trở nên thực sự nổi bật.
-                </p>
-                <p>
-                  Màn hình lớn 6,22 inch “giọt nước” bảo vệ mắt
-                  <br />
-                  Bạn sẽ được tận hưởng những hình ảnh hấp dẫn trên OPPO A12 nhờ màn hình lớn kích thước 6,22 inch, hiệu ứng tràn viền dạng “giọt nước” đẹp mắt, tăng cường trải nghiệm xem phim, chơi game.
-                </p>
-                <p>
-                  Mở khóa theo cách của bạn
-                  <br />
-                  Không cần phải nhập mật khẩu mỗi lần mở máy nữa, OPPO A12 cho phép bạn đăng nhập bằng cảm biến vân tay hoặc nhận diện khuôn mặt AI rất tiện lợi. Chỉ cần chạm nhẹ vào khu vực cảm biến mặt lưng hoặc đơn giản là đưa máy lên, điện thoại sẽ ngay lập tức nhận ra chủ nhân của máy và mở khóa một cách sẵn sàng.
-                </p>
-                <p>
-                  Bộ vi xử lý 8 nhân mạnh mẽ
-                  <br />
-                  OPPO A12 sở hữu cấu hình đáng nể trong tầm giá rẻ nhờ bộ vi xử lý Helio P35. Con chip mới từ nhà MediaTek sản xuất trên tiến trình 12nm với 8 nhân cực mạnh, trong đó 4 nhân 2,35GHz và 4 nhân 1,8GHz đi cùng GPU đồ họa PowerVR GE8320.
-                </p>
-                <p>
-                  Thời lượng pin suốt cả ngày
-                  <br />
-                  Mang trên mình viên pin dung lượng cực “khủng” 4230 mAh, bạn có thể thoải mái sử dụng trong 2 ngày ở nhu cầu sử dụng bình thường.
-                </p>
-                <p>
-                  Âm thanh sống động
-                  <br />
-                  OPPO A12 được trang bị tính năng Dirac, một tính năng cho phép chuyển đổi các chế độ âm thanh thông minh để tối ưu hóa âm thanh dựa trên tác vụ bạn đang hoạt động.
-                </p>
-                <p>
-                  Camera kép AI, tỏa sáng trong từng bức ảnh
-                  <br />
-                  OPPO A12 sở hữu camera kép ở mặt sau, bao gồm camera chính 13MP và camera 2MP hỗ trợ đo độ sâu trường ảnh. Camera chính chất lượng mang đến những hình ảnh sắc nét, rõ ràng và độ sáng, màu sắc trung thực.
-                </p>
-                <p>
-                  Thông số kỹ thuật chi tiết
-                  <br />
-                  Màn hình
-                  <br />
-                  Công nghệ màn hình : IPS LCD
-                  <br />
-                  Màu màn hình : 16 triệu màu
-                  <br />
-                  Chuẩn màn hình : HD +
-                  <br />
-                  Độ phân giải màn hình : 720 x 1560 Pixels
-                  <br />
-                  Màn hình : 6.22 inches
-                  <br />
-                  Mặt kính màn hình : Corning Gorilla Glass 3
-                  <br />
-                  Camera Trước
-                  <br />
-                  Độ phân giải : 5 MP
-                  <br />
-                  Thông tin khác : Xoá phông, Làm đẹp (Selfie A.I Beauty), Nhãn dán (AR Stickers), Flash màn hình, Toàn cảnh (Panorama), Quay video HD, Chụp bằng cử chỉ, Nhận diện khuôn mặt, Làm đẹp (Beautify), Quay video Full HD, Tự động lấy nét (AF), HDR
-                  <br />
-                  Camera Sau
-                  <br />
-                  Độ phân giải : Chính 13 MP & Phụ 2 MP
-                  <br />
-                  Quay phim : Quay phim HD 720p@30fps
-                  <br />
-                  Đèn Flash : Có
-                  <br />
-                  Chụp ảnh nâng cao : Google Lens, Góc siêu rộng (Ultrawide), Nhãn dán (AR Stickers), Chụp bằng cử chỉ, Xoá phông, Quay chậm (Slow Motion), Trôi nhanh thời gian (Time Lapse), A.I Camera, Làm đẹp, Tự động lấy nét (AF)
-                  <br />
-                  Cấu hình phần cứng
-                  <br />
-                  Tốc độ CPU : 2.3GHz
-                  <br />
-                  Số nhân : 4 nhân 2.35 GHz & 4 nhân 1.9 GHz
-                  <br />
-                  Chipset : MediaTek Helio P35 8 nhân
-                  <br />
-                  RAM : 3 GB
-                  <br />
-                  Chip đồ họa (GPU) : PowerVR GE8320
-                  <br />
-                  Cảm biến : Cảm biến tiệm cận, Cảm biến ánh sáng, Cảm biến gia tốc kế
-                  <br />
-                  Bộ nhớ & Lưu trữ
-                  <br />
-                  Danh bạ lưu trữ : Không giới hạn
-                  <br />
-                  ROM : 32 GB
-                  <br />
-                  Bộ nhớ còn lại : Đang cập nhật
-                  <br />
-                  Thẻ nhớ ngoài : MicroSD
-                  <br />
-                  Hỗ trợ thẻ nhớ tối đa : 256 GB
-                  <br />
-                  Thiết kế & Trọng lượng
-                  <br />
-                  Kiểu dáng : Nguyên Khối
-                  <br />
-                  Chất liệu : Khung & Mặt lưng nhựa
-                  <br />
-                  Kích thước : Dài 155.9 mm - Ngang 75.5 mm - Dày 8.3 mm
-                  <br />
-                  Trọng lượng : 165 g
-                  <br />
-                  Khả năng chống nước : Đang cập nhật
-                  <br />
-                  Thông tin pin
-                  <br />
-                  Loại pin : Pin chuẩn Li-Po
-                  <br />
-                  Dung lượng pin : 4230 mAh
-                  <br />
-                  Pin có thể tháo rời : Không
-                  <br />
-                  Chế độ sạc nhanh : Đang cập nhật
-                  <br />
-                  Kết nối & Cổng giao tiếp
-                  <br />
-                  Loại SIM : 2 Nano SIM
-                  <br />
-                  Khe cắm sim : Dual nano-SIM + 1 khe thẻ nhớ
-                  <br />
-                  Wifi : Wi-Fi 802.11 a/b/g/n/ac, DLNA, Wi-Fi Direct, Wi-Fi hotspot
-                  <br />
-                  GPS : BDS, A-GPS, GLONASS
-                  <br />
-                  Bluetooth : Bluetooth 5.0
-                  <br />
-                  GPRS/EDGE : Có
-                  <br />
-                  NFC : Đang cập nhật
-                  <br />
-                  Cổng sạc : Micro USB
-                  <br />
-                  Jack (Input & Output) : 3.5mm
-                  <br />
-                  Giải trí & Ứng dụng
-                  <br />
-                  Xem phim : Có
-                  <br />
-                  Nghe nhạc : Có
-                  <br />
-                  Ghi âm : Có
-                  <br />
-                  FM radio : Có
-                  <br />
-                  Đèn pin : Có
-                  <br />
-                  Chức năng khác : Đang cập nhật
-                  <br />
-                  Bảo hành
-                  <br />
-                  Thời gian bảo hành : 12 Tháng
-                  <br />
-                  Thông tin hàng hóa
-                  <br />
-                  Xuất xứ : Trung Quốc
-                  <br />
-                  Năm sản xuất : 2020
-                  <br />
-                  Thông tin dòng sản phẩm
-                  <br />
-                  Model Series : OPPO A12
-                  <br />
-                  Hệ điều hành
-                  <br />
-                  Hệ điều hành : ColorOS 6.1.2, nền tảng Android 9
-                  <br />
-                  Bộ sản phẩm bao gồm: Hộp, Sạc, Sách hướng dẫn, Cáp, Cây lấy sim, Ốp lưng
-                </p>
-                <p>
-                  Thông tin bảo hành: 
-                  <br />
-                  Sản phẩm được bảo hành 12 tháng tại các trung tâm bảo hành OPPO
-                  <br />
-                  - 1 đổi 1 trong 30 ngày đầu sử dụng (Lỗi phần cứng sản xuất)
-                  <br />
-                  - Giao hàng trên toàn quốc
-                  <br />
-                  - Hotline: 1800 577 776 (miễn phí).
-                </p>
-                <p>
-                  #OPPO #OPPOA12
-                </p>
+              <div
+                class="rounded bg-gray-50 p-4 text-lg capitalize text-slate-700"
+              >
+                Mô tả sản phẩm
+              </div>
+              <div
+                class="mx-4 mt-12 mb-4 text-sm leading-loose"
+              >
+                <div>
+                  <p>
+                    Thể hiện cá tính của bạn bằng thiết kế kim cương 3D độc đáo của OPPO A12, cùng với màn hình lớn “giọt nước” tuyệt mỹ và camera kép sành điệu, bạn sẽ luôn vui vẻ năng động suốt cả ngày.
+                  </p>
+                  <p>
+                    Thiết kế siêu mỏng nhẹ, họa tiết kim cương 3D ấn tượng
+                    <br />
+                    OPPO A12 sở hữu thiết kế không chỉ đẹp phá cách mà còn rất dễ dàng để sử dụng trên tay. Trọng lượng cực nhẹ 165gram, độ mỏng chỉ 8,3mm kết hợp với những đường bo cong khéo léo giúp điện thoại vô cùng gọn nhẹ, mượt mà trong lòng bàn tay. Kiểu dáng của OPPO A12 đặc biệt ấn tượng nhờ điểm nhấn là mặt lưng họa tiết 3D kim cương độc đáo. Ở mỗi góc nhìn khác nhau, bạn sẽ thấy một vẻ đẹp khác nhau, giúp chiếc điện thoại trở nên thực sự nổi bật.
+                  </p>
+                  <p>
+                    Màn hình lớn 6,22 inch “giọt nước” bảo vệ mắt
+                    <br />
+                    Bạn sẽ được tận hưởng những hình ảnh hấp dẫn trên OPPO A12 nhờ màn hình lớn kích thước 6,22 inch, hiệu ứng tràn viền dạng “giọt nước” đẹp mắt, tăng cường trải nghiệm xem phim, chơi game.
+                  </p>
+                  <p>
+                    Mở khóa theo cách của bạn
+                    <br />
+                    Không cần phải nhập mật khẩu mỗi lần mở máy nữa, OPPO A12 cho phép bạn đăng nhập bằng cảm biến vân tay hoặc nhận diện khuôn mặt AI rất tiện lợi. Chỉ cần chạm nhẹ vào khu vực cảm biến mặt lưng hoặc đơn giản là đưa máy lên, điện thoại sẽ ngay lập tức nhận ra chủ nhân của máy và mở khóa một cách sẵn sàng.
+                  </p>
+                  <p>
+                    Bộ vi xử lý 8 nhân mạnh mẽ
+                    <br />
+                    OPPO A12 sở hữu cấu hình đáng nể trong tầm giá rẻ nhờ bộ vi xử lý Helio P35. Con chip mới từ nhà MediaTek sản xuất trên tiến trình 12nm với 8 nhân cực mạnh, trong đó 4 nhân 2,35GHz và 4 nhân 1,8GHz đi cùng GPU đồ họa PowerVR GE8320.
+                  </p>
+                  <p>
+                    Thời lượng pin suốt cả ngày
+                    <br />
+                    Mang trên mình viên pin dung lượng cực “khủng” 4230 mAh, bạn có thể thoải mái sử dụng trong 2 ngày ở nhu cầu sử dụng bình thường.
+                  </p>
+                  <p>
+                    Âm thanh sống động
+                    <br />
+                    OPPO A12 được trang bị tính năng Dirac, một tính năng cho phép chuyển đổi các chế độ âm thanh thông minh để tối ưu hóa âm thanh dựa trên tác vụ bạn đang hoạt động.
+                  </p>
+                  <p>
+                    Camera kép AI, tỏa sáng trong từng bức ảnh
+                    <br />
+                    OPPO A12 sở hữu camera kép ở mặt sau, bao gồm camera chính 13MP và camera 2MP hỗ trợ đo độ sâu trường ảnh. Camera chính chất lượng mang đến những hình ảnh sắc nét, rõ ràng và độ sáng, màu sắc trung thực.
+                  </p>
+                  <p>
+                    Thông số kỹ thuật chi tiết
+                    <br />
+                    Màn hình
+                    <br />
+                    Công nghệ màn hình : IPS LCD
+                    <br />
+                    Màu màn hình : 16 triệu màu
+                    <br />
+                    Chuẩn màn hình : HD +
+                    <br />
+                    Độ phân giải màn hình : 720 x 1560 Pixels
+                    <br />
+                    Màn hình : 6.22 inches
+                    <br />
+                    Mặt kính màn hình : Corning Gorilla Glass 3
+                    <br />
+                    Camera Trước
+                    <br />
+                    Độ phân giải : 5 MP
+                    <br />
+                    Thông tin khác : Xoá phông, Làm đẹp (Selfie A.I Beauty), Nhãn dán (AR Stickers), Flash màn hình, Toàn cảnh (Panorama), Quay video HD, Chụp bằng cử chỉ, Nhận diện khuôn mặt, Làm đẹp (Beautify), Quay video Full HD, Tự động lấy nét (AF), HDR
+                    <br />
+                    Camera Sau
+                    <br />
+                    Độ phân giải : Chính 13 MP & Phụ 2 MP
+                    <br />
+                    Quay phim : Quay phim HD 720p@30fps
+                    <br />
+                    Đèn Flash : Có
+                    <br />
+                    Chụp ảnh nâng cao : Google Lens, Góc siêu rộng (Ultrawide), Nhãn dán (AR Stickers), Chụp bằng cử chỉ, Xoá phông, Quay chậm (Slow Motion), Trôi nhanh thời gian (Time Lapse), A.I Camera, Làm đẹp, Tự động lấy nét (AF)
+                    <br />
+                    Cấu hình phần cứng
+                    <br />
+                    Tốc độ CPU : 2.3GHz
+                    <br />
+                    Số nhân : 4 nhân 2.35 GHz & 4 nhân 1.9 GHz
+                    <br />
+                    Chipset : MediaTek Helio P35 8 nhân
+                    <br />
+                    RAM : 3 GB
+                    <br />
+                    Chip đồ họa (GPU) : PowerVR GE8320
+                    <br />
+                    Cảm biến : Cảm biến tiệm cận, Cảm biến ánh sáng, Cảm biến gia tốc kế
+                    <br />
+                    Bộ nhớ & Lưu trữ
+                    <br />
+                    Danh bạ lưu trữ : Không giới hạn
+                    <br />
+                    ROM : 32 GB
+                    <br />
+                    Bộ nhớ còn lại : Đang cập nhật
+                    <br />
+                    Thẻ nhớ ngoài : MicroSD
+                    <br />
+                    Hỗ trợ thẻ nhớ tối đa : 256 GB
+                    <br />
+                    Thiết kế & Trọng lượng
+                    <br />
+                    Kiểu dáng : Nguyên Khối
+                    <br />
+                    Chất liệu : Khung & Mặt lưng nhựa
+                    <br />
+                    Kích thước : Dài 155.9 mm - Ngang 75.5 mm - Dày 8.3 mm
+                    <br />
+                    Trọng lượng : 165 g
+                    <br />
+                    Khả năng chống nước : Đang cập nhật
+                    <br />
+                    Thông tin pin
+                    <br />
+                    Loại pin : Pin chuẩn Li-Po
+                    <br />
+                    Dung lượng pin : 4230 mAh
+                    <br />
+                    Pin có thể tháo rời : Không
+                    <br />
+                    Chế độ sạc nhanh : Đang cập nhật
+                    <br />
+                    Kết nối & Cổng giao tiếp
+                    <br />
+                    Loại SIM : 2 Nano SIM
+                    <br />
+                    Khe cắm sim : Dual nano-SIM + 1 khe thẻ nhớ
+                    <br />
+                    Wifi : Wi-Fi 802.11 a/b/g/n/ac, DLNA, Wi-Fi Direct, Wi-Fi hotspot
+                    <br />
+                    GPS : BDS, A-GPS, GLONASS
+                    <br />
+                    Bluetooth : Bluetooth 5.0
+                    <br />
+                    GPRS/EDGE : Có
+                    <br />
+                    NFC : Đang cập nhật
+                    <br />
+                    Cổng sạc : Micro USB
+                    <br />
+                    Jack (Input & Output) : 3.5mm
+                    <br />
+                    Giải trí & Ứng dụng
+                    <br />
+                    Xem phim : Có
+                    <br />
+                    Nghe nhạc : Có
+                    <br />
+                    Ghi âm : Có
+                    <br />
+                    FM radio : Có
+                    <br />
+                    Đèn pin : Có
+                    <br />
+                    Chức năng khác : Đang cập nhật
+                    <br />
+                    Bảo hành
+                    <br />
+                    Thời gian bảo hành : 12 Tháng
+                    <br />
+                    Thông tin hàng hóa
+                    <br />
+                    Xuất xứ : Trung Quốc
+                    <br />
+                    Năm sản xuất : 2020
+                    <br />
+                    Thông tin dòng sản phẩm
+                    <br />
+                    Model Series : OPPO A12
+                    <br />
+                    Hệ điều hành
+                    <br />
+                    Hệ điều hành : ColorOS 6.1.2, nền tảng Android 9
+                    <br />
+                    Bộ sản phẩm bao gồm: Hộp, Sạc, Sách hướng dẫn, Cáp, Cây lấy sim, Ốp lưng
+                  </p>
+                  <p>
+                    Thông tin bảo hành: 
+                    <br />
+                    Sản phẩm được bảo hành 12 tháng tại các trung tâm bảo hành OPPO
+                    <br />
+                    - 1 đổi 1 trong 30 ngày đầu sử dụng (Lỗi phần cứng sản xuất)
+                    <br />
+                    - Giao hàng trên toàn quốc
+                    <br />
+                    - Hotline: 1800 577 776 (miễn phí).
+                  </p>
+                  <p>
+                    #OPPO #OPPOA12
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -876,7 +873,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                   href="/Mã-FAMALLT5-giảm-15-đơn-150K-Áo-thun-tay-lỡ-GENZ-phông-Unisex-nam-nữ-Cotton-oversize-form-rộng-Racing-Genz-GZT021-i-60ad02422fb52902585972a9"
                 >
                   <div
-                    class="overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.06rem] hover:shadow-md"
+                    class="overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.04rem] hover:shadow-md"
                   >
                     <div
                       class="relative w-full pt-[100%]"
@@ -891,7 +888,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                       class="overflow-hidden p-2"
                     >
                       <div
-                        class="min-h-[32px] text-xs line-clamp-2"
+                        class="min-h-[2rem] text-xs line-clamp-2"
                       >
                         [Mã FAMALLT5 giảm 15% đơn 150K] Áo thun tay lỡ GENZ phông Unisex nam nữ Cotton oversize form rộng Racing Genz GZT021
                       </div>
@@ -899,10 +896,18 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                         class="mt-3 flex items-center"
                       >
                         <div
-                          class="max-w-[50%] truncate text-sm text-gray-500 line-through"
+                          class="max-w-[50%] truncate text-gray-500 line-through"
                         >
-                          ₫
-                          315.000
+                          <span
+                            class="text-xs"
+                          >
+                            ₫
+                          </span>
+                          <span
+                            class="text-sm"
+                          >
+                            315.000
+                          </span>
                         </div>
                         <div
                           class="ml-1 truncate text-orange"
@@ -920,7 +925,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                         </div>
                       </div>
                       <div
-                        class="mt-3 flex items-center"
+                        class="mt-3 flex items-center justify-end"
                       >
                         <div
                           class="flex items-center"
@@ -1135,7 +1140,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                   href="/Áo-thun-nam-nữ-tay-lỡ-YINXX-áo-phông-nam-nữ-form-rộng-A304-i-60ad01102fb52902585972a7"
                 >
                   <div
-                    class="overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.06rem] hover:shadow-md"
+                    class="overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.04rem] hover:shadow-md"
                   >
                     <div
                       class="relative w-full pt-[100%]"
@@ -1150,7 +1155,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                       class="overflow-hidden p-2"
                     >
                       <div
-                        class="min-h-[32px] text-xs line-clamp-2"
+                        class="min-h-[2rem] text-xs line-clamp-2"
                       >
                         Áo thun nam nữ tay lỡ YINXX, áo phông nam nữ form rộng A304
                       </div>
@@ -1158,10 +1163,18 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                         class="mt-3 flex items-center"
                       >
                         <div
-                          class="max-w-[50%] truncate text-sm text-gray-500 line-through"
+                          class="max-w-[50%] truncate text-gray-500 line-through"
                         >
-                          ₫
-                          106.000
+                          <span
+                            class="text-xs"
+                          >
+                            ₫
+                          </span>
+                          <span
+                            class="text-sm"
+                          >
+                            106.000
+                          </span>
                         </div>
                         <div
                           class="ml-1 truncate text-orange"
@@ -1179,7 +1192,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                         </div>
                       </div>
                       <div
-                        class="mt-3 flex items-center"
+                        class="mt-3 flex items-center justify-end"
                       >
                         <div
                           class="flex items-center"
@@ -1394,7 +1407,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                   href="/Mẫu-Mới-Khuyến-Mãi-Sốc-3-Ngày-⚡-Áo-Thun-Tay-Lỡ-In-Bướm-Dirty-Coins-Ao-Thun-Unisex-From-Rộng-BONSEN-STORE-i-60ad004c2fb52902585972a6"
                 >
                   <div
-                    class="overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.06rem] hover:shadow-md"
+                    class="overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.04rem] hover:shadow-md"
                   >
                     <div
                       class="relative w-full pt-[100%]"
@@ -1409,7 +1422,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                       class="overflow-hidden p-2"
                     >
                       <div
-                        class="min-h-[32px] text-xs line-clamp-2"
+                        class="min-h-[2rem] text-xs line-clamp-2"
                       >
                         Mẫu Mới Khuyến Mãi Sốc 3 Ngày ⚡ Áo Thun Tay Lỡ In Bướm Dirty Coins Ao Thun Unisex From Rộng -BONSEN STORE
                       </div>
@@ -1417,10 +1430,18 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                         class="mt-3 flex items-center"
                       >
                         <div
-                          class="max-w-[50%] truncate text-sm text-gray-500 line-through"
+                          class="max-w-[50%] truncate text-gray-500 line-through"
                         >
-                          ₫
-                          70.000
+                          <span
+                            class="text-xs"
+                          >
+                            ₫
+                          </span>
+                          <span
+                            class="text-sm"
+                          >
+                            70.000
+                          </span>
                         </div>
                         <div
                           class="ml-1 truncate text-orange"
@@ -1438,7 +1459,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                         </div>
                       </div>
                       <div
-                        class="mt-3 flex items-center"
+                        class="mt-3 flex items-center justify-end"
                       >
                         <div
                           class="flex items-center"
@@ -1653,7 +1674,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                   href="/Có-video-Áo-phông-form-rộng-tay-lỡ-unisex--Áo-thun-orange-soda--Sỉ-áo-thun-số-lượng-lớn-i-60acfac72fb529025859729f"
                 >
                   <div
-                    class="overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.06rem] hover:shadow-md"
+                    class="overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.04rem] hover:shadow-md"
                   >
                     <div
                       class="relative w-full pt-[100%]"
@@ -1668,7 +1689,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                       class="overflow-hidden p-2"
                     >
                       <div
-                        class="min-h-[32px] text-xs line-clamp-2"
+                        class="min-h-[2rem] text-xs line-clamp-2"
                       >
                         [Có video] Áo phông form rộng tay lỡ unisex - Áo thun orange soda - Sỉ áo thun số lượng lớn
                       </div>
@@ -1676,10 +1697,18 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                         class="mt-3 flex items-center"
                       >
                         <div
-                          class="max-w-[50%] truncate text-sm text-gray-500 line-through"
+                          class="max-w-[50%] truncate text-gray-500 line-through"
                         >
-                          ₫
-                          60.000
+                          <span
+                            class="text-xs"
+                          >
+                            ₫
+                          </span>
+                          <span
+                            class="text-sm"
+                          >
+                            60.000
+                          </span>
                         </div>
                         <div
                           class="ml-1 truncate text-orange"
@@ -1697,7 +1726,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                         </div>
                       </div>
                       <div
-                        class="mt-3 flex items-center"
+                        class="mt-3 flex items-center justify-end"
                       >
                         <div
                           class="flex items-center"
@@ -1912,7 +1941,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                   href="/Áo-thun-nam-ngắn-tay-thể-thao-chất-liệu-thun-lạnh-4-chiều-AT39-i-60acf0ec2fb5290258597299"
                 >
                   <div
-                    class="overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.06rem] hover:shadow-md"
+                    class="overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.04rem] hover:shadow-md"
                   >
                     <div
                       class="relative w-full pt-[100%]"
@@ -1927,7 +1956,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                       class="overflow-hidden p-2"
                     >
                       <div
-                        class="min-h-[32px] text-xs line-clamp-2"
+                        class="min-h-[2rem] text-xs line-clamp-2"
                       >
                         Áo thun nam ngắn tay thể thao chất liệu thun lạnh 4 chiều AT39
                       </div>
@@ -1935,10 +1964,18 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                         class="mt-3 flex items-center"
                       >
                         <div
-                          class="max-w-[50%] truncate text-sm text-gray-500 line-through"
+                          class="max-w-[50%] truncate text-gray-500 line-through"
                         >
-                          ₫
-                          198.000
+                          <span
+                            class="text-xs"
+                          >
+                            ₫
+                          </span>
+                          <span
+                            class="text-sm"
+                          >
+                            198.000
+                          </span>
                         </div>
                         <div
                           class="ml-1 truncate text-orange"
@@ -1956,7 +1993,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                         </div>
                       </div>
                       <div
-                        class="mt-3 flex items-center"
+                        class="mt-3 flex items-center justify-end"
                       >
                         <div
                           class="flex items-center"
@@ -2171,7 +2208,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                   href="/Mã-FAMAYMA2-giảm-10K-đơn-50K-Áo-thun-nam-nữ-form-rộng-Yinxx-áo-phông-tay-lỡ-ATL43-i-60abaa9adbfa6e153cb9962c"
                 >
                   <div
-                    class="overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.06rem] hover:shadow-md"
+                    class="overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.04rem] hover:shadow-md"
                   >
                     <div
                       class="relative w-full pt-[100%]"
@@ -2186,7 +2223,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                       class="overflow-hidden p-2"
                     >
                       <div
-                        class="min-h-[32px] text-xs line-clamp-2"
+                        class="min-h-[2rem] text-xs line-clamp-2"
                       >
                         [Mã FAMAYMA2 giảm 10K đơn 50K] Áo thun nam nữ form rộng Yinxx, áo phông tay lỡ ATL43
                       </div>
@@ -2194,10 +2231,18 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                         class="mt-3 flex items-center"
                       >
                         <div
-                          class="max-w-[50%] truncate text-sm text-gray-500 line-through"
+                          class="max-w-[50%] truncate text-gray-500 line-through"
                         >
-                          ₫
-                          80.000
+                          <span
+                            class="text-xs"
+                          >
+                            ₫
+                          </span>
+                          <span
+                            class="text-sm"
+                          >
+                            80.000
+                          </span>
                         </div>
                         <div
                           class="ml-1 truncate text-orange"
@@ -2215,7 +2260,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                         </div>
                       </div>
                       <div
-                        class="mt-3 flex items-center"
+                        class="mt-3 flex items-center justify-end"
                       >
                         <div
                           class="flex items-center"
@@ -2430,7 +2475,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                   href="/Mã-FAMAYMA2-giảm-10K-đơn-50K-Áo-thun-tay-lỡ-unisex-Yinxx-áo-phông-form-rộng-ATL187-i-60aba9a2dbfa6e153cb9962b"
                 >
                   <div
-                    class="overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.06rem] hover:shadow-md"
+                    class="overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.04rem] hover:shadow-md"
                   >
                     <div
                       class="relative w-full pt-[100%]"
@@ -2445,7 +2490,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                       class="overflow-hidden p-2"
                     >
                       <div
-                        class="min-h-[32px] text-xs line-clamp-2"
+                        class="min-h-[2rem] text-xs line-clamp-2"
                       >
                         [Mã FAMAYMA2 giảm 10K đơn 50K] Áo thun tay lỡ unisex Yinxx, áo phông form rộng ATL187
                       </div>
@@ -2453,10 +2498,18 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                         class="mt-3 flex items-center"
                       >
                         <div
-                          class="max-w-[50%] truncate text-sm text-gray-500 line-through"
+                          class="max-w-[50%] truncate text-gray-500 line-through"
                         >
-                          ₫
-                          100.000
+                          <span
+                            class="text-xs"
+                          >
+                            ₫
+                          </span>
+                          <span
+                            class="text-sm"
+                          >
+                            100.000
+                          </span>
                         </div>
                         <div
                           class="ml-1 truncate text-orange"
@@ -2474,7 +2527,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
                         </div>
                       </div>
                       <div
-                        class="mt-3 flex items-center"
+                        class="mt-3 flex items-center justify-end"
                       >
                         <div
                           class="flex items-center"
@@ -2690,7 +2743,7 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
         class="bg-neutral-100 py-16"
       >
         <div
-          class="mx-auto max-w-7xl px-4"
+          class="container"
         >
           <div
             class="grid grid-cols-1 gap-4 lg:grid-cols-3"
@@ -2698,44 +2751,44 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
             <div
               class="lg:col-span-1"
             >
-              <span>
+              <div>
                 © 2022 Shopee. Tất cả các quyền được bảo lưu.
-              </span>
+              </div>
             </div>
             <div
               class="lg:col-span-2"
             >
-              <p>
+              <div>
                 Quốc gia & Khu vực: Singapore Indonesia Đài Loan Thái Lan Malaysia Việt Nam Philippines Brazil México Colombia Chile Poland
-              </p>
+              </div>
             </div>
           </div>
           <div
             class="mt-10 text-center text-sm"
           >
-            <span>
+            <div>
               Công ty TNHH Shopee
-            </span>
-            <p
+            </div>
+            <div
               class="mt-6"
             >
               Địa chỉ: Tầng 4-5-6, Tòa nhà Capital Place, số 29 đường Liễu Giai, Phường Ngọc Khánh, Quận Ba Đình, Thành phố Hà Nội, Việt Nam. Tổng đài hỗ trợ: 19001221 - Email: cskh@hotro.shopee.vn
-            </p>
-            <p
+            </div>
+            <div
               class="mt-2"
             >
               Chịu Trách Nhiệm Quản Lý Nội Dung: Nguyễn Đức Trí - Điện thoại liên hệ: 024 73081221 (ext 4678)
-            </p>
-            <p
+            </div>
+            <div
               class="mt-2"
             >
               Mã số doanh nghiệp: 0106773786 do Sở Kế hoạch & Đầu tư TP Hà Nội cấp lần đầu ngày 10/02/2015
-            </p>
-            <p
+            </div>
+            <div
               class="mt-2"
             >
               © 2015 - Bản quyền thuộc về Công ty TNHH Shopee
-            </p>
+            </div>
           </div>
         </div>
       </footer>
@@ -2745,12 +2798,10 @@ exports[`ProductDetail > Render Ui Product Detail 1`] = `
     />
   </div>
   <div
-    data-floating-ui-portal=""
     id=":r0:"
   />
   <div
-    data-floating-ui-portal=""
-    id=":r2:"
+    id=":r1:"
   />
 </body>
 `;

@@ -1,20 +1,21 @@
 import classNames from 'classnames'
 import { useContext } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { path } from 'src/constants/path'
+import path from 'src/constants/path'
 import { AppContext } from 'src/contexts/app.context'
 import { getAvatarUrl } from 'src/utils/utils'
 
 export default function UserSideNav() {
   const { profile } = useContext(AppContext)
+
   return (
-    <>
-      <div className='flex items-center border-b-gray-200 py-4'>
+    <div>
+      <div className='flex items-center border-b border-b-gray-200 py-4'>
         <Link to={path.profile} className='h-12 w-12 flex-shrink-0 overflow-hidden rounded-full border border-black/10'>
-          <img src={getAvatarUrl(profile?.avatar)} alt='avatar' className='h-full w-full object-cover' />
+          <img src={getAvatarUrl(profile?.avatar)} alt='' className='h-full w-full object-cover' />
         </Link>
         <div className='flex-grow pl-4'>
-          <div className='mb-1 truncate font-semibold text-gray-600'>{profile?.name}</div>
+          <div className='mb-1 truncate font-semibold text-gray-600'>{profile?.email}</div>
           <Link to={path.profile} className='flex items-center capitalize text-gray-500'>
             <svg
               width={12}
@@ -37,7 +38,7 @@ export default function UserSideNav() {
         <NavLink
           to={path.profile}
           className={({ isActive }) =>
-            classNames('flex items-center capitalize transition-colors', {
+            classNames('flex items-center capitalize  transition-colors', {
               'text-orange': isActive,
               'text-gray-600': !isActive
             })
@@ -49,9 +50,9 @@ export default function UserSideNav() {
           Tài khoản của tôi
         </NavLink>
         <NavLink
-          to={path.changePass}
+          to={path.changePassword}
           className={({ isActive }) =>
-            classNames('mt-4 flex items-center capitalize  transition-colors', {
+            classNames('mt-4 flex items-center capitalize transition-colors', {
               'text-orange': isActive,
               'text-gray-600': !isActive
             })
@@ -65,7 +66,7 @@ export default function UserSideNav() {
         <NavLink
           to={path.historyPurchase}
           className={({ isActive }) =>
-            classNames('mt-4 flex items-center capitalize  transition-colors', {
+            classNames('mt-4 flex items-center  capitalize transition-colors', {
               'text-orange': isActive,
               'text-gray-600': !isActive
             })
@@ -77,6 +78,6 @@ export default function UserSideNav() {
           Đơn mua
         </NavLink>
       </div>
-    </>
+    </div>
   )
 }

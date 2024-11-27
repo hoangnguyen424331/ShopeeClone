@@ -1,39 +1,33 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import React, { useCallback, useContext, useEffect, useMemo } from 'react'
+import React, { useContext, useEffect, useMemo } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-// eslint-disable-next-line import/no-named-as-default
-import produce from 'immer'
-import keyBy from 'lodash/keyBy'
-import { toast } from 'react-toastify'
-
+import purchaseApi from 'src/apis/purchase.api'
 import Button from 'src/components/Button'
 import QuantityController from 'src/components/QuantityController'
+import path from 'src/constants/path'
 import { purchasesStatus } from 'src/constants/purchase'
 import { Purchase } from 'src/types/purchase.type'
 import { formatCurrency, generateNameId } from 'src/utils/utils'
+import { produce } from 'immer'
+import keyBy from 'lodash/keyBy'
+import { toast } from 'react-toastify'
 import { AppContext } from 'src/contexts/app.context'
-import { purchaseApi } from 'src/apis/purchase.api'
-import { path } from 'src/constants/path'
+import noproduct from 'src/assets/images/no-product.png'
 
 export default function Cart() {
-  const location = useLocation()
   const { extendedPurchases, setExtendedPurchases } = useContext(AppContext)
-
   const { data: purchasesInCartData, refetch } = useQuery({
-    queryKey: ['addToCart', { status: purchasesStatus.inCart }],
+    queryKey: ['purchases', { status: purchasesStatus.inCart }],
     queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart })
   })
-  const purchasesInCart = purchasesInCartData?.data.data
-
   const updatePurchaseMutation = useMutation({
-    mutationFn: purchaseApi.updatePurchases,
+    mutationFn: purchaseApi.updatePurchase,
     onSuccess: () => {
       refetch()
     }
   })
-
   const buyProductsMutation = useMutation({
-    mutationFn: purchaseApi.buyProduct,
+    mutationFn: purchaseApi.buyProducts,
     onSuccess: (data) => {
       refetch()
       toast.success(data.data.message, {
@@ -42,20 +36,18 @@ export default function Cart() {
       })
     }
   })
-
   const deletePurchasesMutation = useMutation({
-    mutationFn: purchaseApi.deletePurchases,
+    mutationFn: purchaseApi.deletePurchase,
     onSuccess: () => {
       refetch()
     }
   })
-
-  const choosePurchaseIdFromLocation = (location.state as { purchaseId: string } | null)?.purchaseId
-
+  const location = useLocation()
+  const choosenPurchaseIdFromLocation = (location.state as { purchaseId: string } | null)?.purchaseId
+  const purchasesInCart = purchasesInCartData?.data.data
   const isAllChecked = useMemo(() => extendedPurchases.every((purchase) => purchase.checked), [extendedPurchases])
-
   const checkedPurchases = useMemo(() => extendedPurchases.filter((purchase) => purchase.checked), [extendedPurchases])
-
+  const checkedPurchasesCount = checkedPurchases.length
   const totalCheckedPurchasePrice = useMemo(
     () =>
       checkedPurchases.reduce((result, current) => {
@@ -63,8 +55,7 @@ export default function Cart() {
       }, 0),
     [checkedPurchases]
   )
-
-  const totalCheckedPurchaseSavePrice = useMemo(
+  const totalCheckedPurchaseSavingPrice = useMemo(
     () =>
       checkedPurchases.reduce((result, current) => {
         return result + (current.product.price_before_discount - current.product.price) * current.buy_count
@@ -74,24 +65,21 @@ export default function Cart() {
 
   useEffect(() => {
     setExtendedPurchases((prev) => {
-      // tạo 1 object từ 1 mảng có key là _id
       const extendedPurchasesObject = keyBy(prev, '_id')
       return (
         purchasesInCart?.map((purchase) => {
-          const isChoosePurchaseFromLocation = choosePurchaseIdFromLocation === purchase._id
+          const isChoosenPurchaseFromLocation = choosenPurchaseIdFromLocation === purchase._id
           return {
             ...purchase,
             disabled: false,
-            checked: isChoosePurchaseFromLocation || Boolean(extendedPurchasesObject[purchase._id]?.checked)
+            checked: isChoosenPurchaseFromLocation || Boolean(extendedPurchasesObject[purchase._id]?.checked)
           }
         }) || []
       )
     })
-  }, [purchasesInCart, choosePurchaseIdFromLocation, setExtendedPurchases])
+  }, [purchasesInCart, choosenPurchaseIdFromLocation])
 
-  //f5 lại xoá state purchase mua ngay
   useEffect(() => {
-    //component will unmount
     return () => {
       history.replaceState(null, '')
     }
@@ -105,53 +93,46 @@ export default function Cart() {
     )
   }
 
-  const handleCheckAll = useCallback(() => {
+  const handleCheckAll = () => {
     setExtendedPurchases((prev) =>
       prev.map((purchase) => ({
         ...purchase,
         checked: !isAllChecked
       }))
     )
-  }, [isAllChecked, setExtendedPurchases])
+  }
 
-  const handleTypeQuantity = useCallback(
-    (purchaseIndex: number) => (value: number) => {
+  const handleTypeQuantity = (purchaseIndex: number) => (value: number) => {
+    setExtendedPurchases(
+      produce((draft) => {
+        draft[purchaseIndex].buy_count = value
+      })
+    )
+  }
+
+  const handleQuantity = (purchaseIndex: number, value: number, enable: boolean) => {
+    if (enable) {
+      const purchase = extendedPurchases[purchaseIndex]
       setExtendedPurchases(
         produce((draft) => {
-          draft[purchaseIndex].buy_count = value
+          draft[purchaseIndex].disabled = true
         })
       )
-    },
-    [setExtendedPurchases]
-  )
+      updatePurchaseMutation.mutate({ product_id: purchase.product._id, buy_count: value })
+    }
+  }
 
-  const handleQuantity = useCallback(
-    (purchaseIndex: number, value: number, enable: boolean) => {
-      if (enable) {
-        const purchase = extendedPurchases[purchaseIndex]
-        setExtendedPurchases(
-          produce((draft) => {
-            draft[purchaseIndex].disabled = true
-          })
-        )
-        updatePurchaseMutation.mutate({ product_id: purchase.product._id, buy_count: value })
-      }
-    },
-    [extendedPurchases, setExtendedPurchases, updatePurchaseMutation]
-  )
-
-  //Currying thì ko được dùng trong useCallback
   const handleDelete = (purchaseIndex: number) => () => {
     const purchaseId = extendedPurchases[purchaseIndex]._id
     deletePurchasesMutation.mutate([purchaseId])
   }
 
-  const handleDeleteManyPurchases = useCallback(() => {
+  const handleDeleteManyPurchases = () => {
     const purchasesIds = checkedPurchases.map((purchase) => purchase._id)
     deletePurchasesMutation.mutate(purchasesIds)
-  }, [checkedPurchases, deletePurchasesMutation])
+  }
 
-  const handleBuyPurchases = useCallback(() => {
+  const handleBuyPurchases = () => {
     if (checkedPurchases.length > 0) {
       const body = checkedPurchases.map((purchase) => ({
         product_id: purchase.product._id,
@@ -159,7 +140,7 @@ export default function Cart() {
       }))
       buyProductsMutation.mutate(body)
     }
-  }, [buyProductsMutation, checkedPurchases])
+  }
 
   return (
     <div className='bg-neutral-100 py-16'>
@@ -295,10 +276,10 @@ export default function Cart() {
                     onChange={handleCheckAll}
                   />
                 </div>
-                <button className='mx-3 border-none bg-none' onClick={() => handleCheckAll()}>
+                <button className='mx-3 border-none bg-none' onClick={handleCheckAll}>
                   Chọn tất cả ({extendedPurchases.length})
                 </button>
-                <button className='mx-3 border-none bg-none' onClick={() => handleDeleteManyPurchases()}>
+                <button className='mx-3 border-none bg-none' onClick={handleDeleteManyPurchases}>
                   Xóa
                 </button>
               </div>
@@ -306,18 +287,18 @@ export default function Cart() {
               <div className='mt-5 flex flex-col sm:ml-auto sm:mt-0 sm:flex-row sm:items-center'>
                 <div>
                   <div className='flex items-center sm:justify-end'>
-                    <div>Tổng thanh toán ({checkedPurchases.length} sản phẩm):</div>
+                    <div>Tổng thanh toán ({checkedPurchasesCount} sản phẩm):</div>
                     <div className='ml-2 text-2xl text-orange'>₫{formatCurrency(totalCheckedPurchasePrice)}</div>
                   </div>
                   <div className='flex items-center text-sm sm:justify-end'>
                     <div className='text-gray-500'>Tiết kiệm</div>
-                    <div className='ml-6 text-orange'>₫{formatCurrency(totalCheckedPurchaseSavePrice)}</div>
+                    <div className='ml-6 text-orange'>₫{formatCurrency(totalCheckedPurchaseSavingPrice)}</div>
                   </div>
                 </div>
                 <Button
-                  onClick={() => handleBuyPurchases()}
-                  disabled={buyProductsMutation.isLoading}
                   className='mt-5 flex h-10 w-52 items-center justify-center bg-red-500 text-sm uppercase text-white hover:bg-red-600 sm:ml-4 sm:mt-0'
+                  onClick={handleBuyPurchases}
+                  disabled={buyProductsMutation.isPending}
                 >
                   Mua hàng
                 </Button>
@@ -326,6 +307,7 @@ export default function Cart() {
           </>
         ) : (
           <div className='text-center'>
+            <img src={noproduct} alt='no purchase' className='mx-auto h-24 w-24' />
             <div className='mt-5 font-bold text-gray-400'>Giỏ hàng của bạn còn trống</div>
             <div className='mt-5 text-center'>
               <Link

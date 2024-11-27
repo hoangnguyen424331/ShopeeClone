@@ -1,55 +1,53 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import React, { useCallback, useEffect, useMemo, useRef, useState, useContext } from 'react'
 import DOMPurify from 'dompurify'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { productApi } from 'src/apis/product.api'
-import ProductRating from 'src/components/ProductRating'
-import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from 'src/utils/utils'
-import { Product as ProductType, ProductListConfig } from 'src/types/product.types'
-import Product from '../ProductList/components/Product'
-import QuantityController from 'src/components/QuantityController'
-import { purchaseApi } from 'src/apis/purchase.api'
-import { purchasesStatus } from 'src/constants/purchase'
+import productApi from 'src/apis/product.api'
+import purchaseApi from 'src/apis/purchase.api'
 import { toast } from 'react-toastify'
-import { path } from 'src/constants/path'
+import ProductRating from 'src/components/ProductRating'
+import QuantityController from 'src/components/QuantityController'
+import { purchasesStatus } from 'src/constants/purchase'
+import { Product as ProductType, ProductListConfig } from 'src/types/product.type'
+import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from 'src/utils/utils'
+import Product from '../ProductList/components/Product'
+import path from 'src/constants/path'
+import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet-async'
 import { convert } from 'html-to-text'
-import { AppContext } from 'src/contexts/app.context'
 
 export default function ProductDetail() {
-  const { id } = useParams()
+  const { t } = useTranslation(['product'])
   const queryClient = useQueryClient()
-  const { isAuthenticated } = useContext(AppContext)
-  const { data: dataProductDetail } = useQuery({
-    queryKey: ['productDetail', getIdFromNameId(id as string)],
-    queryFn: () => productApi.getProductDetail(getIdFromNameId(id as string))
+  const [buyCount, setBuyCount] = useState(1)
+  const { nameId } = useParams()
+  const id = getIdFromNameId(nameId as string)
+  const { data: productDetailData } = useQuery({
+    queryKey: ['product', id],
+    queryFn: () => productApi.getProductDetail(id as string)
   })
-  const product = dataProductDetail?.data.data
   const [currentIndexImages, setCurrentIndexImages] = useState([0, 5])
   const [activeImage, setActiveImage] = useState('')
+  const product = productDetailData?.data.data
   const imageRef = useRef<HTMLImageElement>(null)
-  const [buyCount, setBuyCount] = useState(1)
-  const navigate = useNavigate()
-
   const currentImages = useMemo(
     () => (product ? product.images.slice(...currentIndexImages) : []),
-    [currentIndexImages, product]
+    [product, currentIndexImages]
   )
+  const queryConfig: ProductListConfig = { limit: '20', page: '1', category: product?.category._id }
 
-  const queryConfig: ProductListConfig = { limit: 20, page: 1, category: product?.category._id }
-
-  const { data: productSimilar } = useQuery({
-    queryKey: ['productSimilar', queryConfig],
-    queryFn: () => productApi.getProducts(queryConfig),
-    //khi product có data thì query mới đc gọi
-    enabled: Boolean(product),
-    //đã list data ở trang list thì sang trang detail không list ra
-    staleTime: 3 * 60 * 1000
+  const { data: productsData } = useQuery({
+    queryKey: ['products', queryConfig],
+    queryFn: () => {
+      return productApi.getProducts(queryConfig)
+    },
+    staleTime: 3 * 60 * 1000,
+    enabled: Boolean(product)
   })
-
   const addToCartMutation = useMutation({
     mutationFn: purchaseApi.addToCart
   })
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (product && product.images.length > 0) {
@@ -77,10 +75,6 @@ export default function ProductDetail() {
     const rect = event.currentTarget.getBoundingClientRect()
     const image = imageRef.current as HTMLImageElement
     const { naturalHeight, naturalWidth } = image
-    // Cách 1: Lấy offsetX, offsetY đơn giản khi chúng ta đã xử lý được bubble event
-    // const { offsetX, offsetY } = event.nativeEvent
-
-    // Cách 2: Lấy offsetX, offsetY khi chúng ta không xử lý được bubble event
     const offsetX = event.pageX - (rect.x + window.scrollX)
     const offsetY = event.pageY - (rect.y + window.scrollY)
 
@@ -101,49 +95,33 @@ export default function ProductDetail() {
     setBuyCount(value)
   }
 
-  const addToCart = useCallback(() => {
-    if (isAuthenticated === false) {
-      navigate(path.login)
-    } else {
-      addToCartMutation.mutate(
-        {
-          buy_count: buyCount,
-          product_id: product?._id as string
-        },
-        {
-          onSuccess: (data) => {
-            // update lại api
-            queryClient.invalidateQueries({ queryKey: ['addToCart', { status: purchasesStatus.inCart }] }),
-              toast.success(data.data.message, { autoClose: 1000 })
-          }
+  const addToCart = () => {
+    addToCartMutation.mutate(
+      { buy_count: buyCount, product_id: product?._id as string },
+      {
+        onSuccess: (data) => {
+          toast.success(data.data.message, { autoClose: 1000 })
+          queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
         }
-      )
-    }
-  }, [addToCartMutation, buyCount, isAuthenticated, navigate, product?._id, queryClient])
+      }
+    )
+  }
 
-  const buyNow = useCallback(async () => {
-    if (isAuthenticated === false) {
-      navigate(path.login)
-    } else {
-      const res = await addToCartMutation.mutateAsync({
-        buy_count: buyCount,
-        product_id: product?._id as string
-      })
-      const purchase = res.data.data
-      navigate(path.cart, {
-        state: {
-          purchaseId: purchase._id
-        }
-      })
-    }
-  }, [addToCartMutation, buyCount, isAuthenticated, navigate, product?._id])
+  const buyNow = async () => {
+    const res = await addToCartMutation.mutateAsync({ buy_count: buyCount, product_id: product?._id as string })
+    const purchase = res.data.data
+    navigate(path.cart, {
+      state: {
+        purchaseId: purchase._id
+      }
+    })
+  }
 
   if (!product) return null
-
   return (
     <div className='bg-gray-200 py-6'>
       <Helmet>
-        <title>{product.name}</title>
+        <title>{product.name} | Shopee</title>
         <meta
           name='description'
           content={convert(product.description, {
@@ -165,7 +143,7 @@ export default function ProductDetail() {
                 <img
                   src={activeImage}
                   alt={product.name}
-                  className=' absolute top-0 left-0 h-full w-full bg-white object-cover'
+                  className='absolute top-0 left-0 h-full w-full bg-white object-cover'
                   ref={imageRef}
                 />
               </div>
@@ -222,38 +200,39 @@ export default function ProductDetail() {
                   <span className='mr-1 border-b border-b-orange text-orange'>{product.rating}</span>
                   <ProductRating
                     rating={product.rating}
-                    activeClassnames='fill-orange text-orange h-4 w-4'
-                    nonActiveClassnames='fill-gray-300 text-gray-300 h-4 w-4'
+                    activeClassname='fill-orange text-orange h-4 w-4'
+                    nonActiveClassname='fill-gray-300 text-gray-300 h-4 w-4'
                   />
                 </div>
-                <div className='mx-4 h-4 w-[1px] bg-gray-200' />
-                <div className=''>
+                <div className='mx-4 h-4 w-[1px] bg-gray-300'></div>
+                <div>
                   <span>{formatNumberToSocialStyle(product.sold)}</span>
-                  <span className='ml-1 text-gray-500'>Đánh giá</span>
+                  <span className='ml-1 text-gray-500'>Đã bán</span>
                 </div>
               </div>
               <div className='mt-8 flex items-center bg-gray-50 px-5 py-4'>
-                <span className='text-gray-500 line-through'>₫{formatCurrency(product.price_before_discount)}</span>
-                <p className='mx-3 text-3xl font-medium text-orange'>₫{formatCurrency(product.price)}</p>
-                <div className='flex items-center bg-orange px-1 text-xs text-white'>
-                  <span>{rateSale(product.price_before_discount, product.price)}</span>
-                  <p className='ml-1 uppercase'>Giảm</p>
+                <div className='text-gray-500 line-through'>₫{formatCurrency(product.price_before_discount)}</div>
+                <div className='ml-3 text-3xl font-medium text-orange'>₫{formatCurrency(product.price)}</div>
+                <div className='ml-4 rounded-sm bg-orange px-1 py-[2px] text-xs font-semibold uppercase text-white'>
+                  {rateSale(product.price_before_discount, product.price)} giảm
                 </div>
               </div>
               <div className='mt-8 flex items-center'>
-                <span className='capitalize text-gray-500'>Số lượng</span>
+                <div className='capitalize text-gray-500'>Số lượng</div>
                 <QuantityController
-                  value={buyCount}
                   onDecrease={handleBuyCount}
                   onIncrease={handleBuyCount}
                   onType={handleBuyCount}
+                  value={buyCount}
                   max={product.quantity}
                 />
-                <div className='ml-6 text-sm text-gray-500'>{product.quantity} Sản phẩm có sẵn</div>
+                <div className='ml-6 text-sm text-gray-500'>
+                  {product.quantity} {t('product:available')}
+                </div>
               </div>
               <div className='mt-8 flex items-center'>
                 <button
-                  onClick={() => addToCart()}
+                  onClick={addToCart}
                   className='flex h-12 items-center justify-center rounded-sm border border-orange bg-orange/10 px-5 capitalize text-orange shadow-sm hover:bg-orange/5'
                 >
                   <svg
@@ -282,8 +261,8 @@ export default function ProductDetail() {
                   Thêm vào giỏ hàng
                 </button>
                 <button
-                  onClick={() => buyNow()}
-                  className='ml-4 flex h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90'
+                  onClick={buyNow}
+                  className='fkex ml-4 h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90'
                 >
                   Mua ngay
                 </button>
@@ -292,24 +271,27 @@ export default function ProductDetail() {
           </div>
         </div>
       </div>
-      <div className='container'>
-        <div className='mt-8 bg-white py-4 shadow'>
-          <div className='rounded bg-gray-50 p-4 text-lg capitalize text-slate-700'>Mô tả sản phẩm</div>
-          <div className='mx-4 mt-12 mb-4 text-sm leading-loose'>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(product.description)
-              }}
-            />
+      <div className='mt-8'>
+        <div className='container'>
+          <div className=' bg-white p-4 shadow'>
+            <div className='rounded bg-gray-50 p-4 text-lg capitalize text-slate-700'>Mô tả sản phẩm</div>
+            <div className='mx-4 mt-12 mb-4 text-sm leading-loose'>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(product.description)
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>
+
       <div className='mt-8'>
         <div className='container'>
           <div className='uppercase text-gray-400'>CÓ THỂ BẠN CŨNG THÍCH</div>
-          {productSimilar && (
+          {productsData && (
             <div className='mt-6 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
-              {productSimilar.data.data.products.map((product) => (
+              {productsData.data.data.products.map((product) => (
                 <div className='col-span-1' key={product._id}>
                   <Product product={product} />
                 </div>

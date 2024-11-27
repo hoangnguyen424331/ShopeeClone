@@ -23,14 +23,21 @@ const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function Inpu
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
     if (/^\d+$/.test(value) || value === '') {
-      onChange && onChange(event)
+      if (onChange) {
+        onChange(event)
+      }
       setLocalValue(value)
     }
   }
-
   return (
-    <div className={'relative ' + className}>
-      <input className={classNameInput} {...rest} onChange={handleChange} ref={ref} value={value || localValue} />
+    <div className={className}>
+      <input
+        className={classNameInput}
+        onChange={handleChange}
+        value={value === undefined ? localValue : value}
+        {...rest}
+        ref={ref}
+      />
       <div className={classNameError}>{errorMessage}</div>
     </div>
   )
