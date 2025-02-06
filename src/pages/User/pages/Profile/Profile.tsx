@@ -21,6 +21,7 @@ function Info() {
     control,
     formState: { errors }
   } = useFormContext<FormData>()
+
   return (
     <Fragment>
       <div className='mt-6 flex flex-col flex-wrap sm:flex-row'>
