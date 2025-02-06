@@ -2,11 +2,19 @@ import { ButtonHTMLAttributes } from 'react'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean
+  size?: 'small' | 'medium' | 'large'
 }
 
 export default function Button(props: ButtonProps) {
-  const { className, isLoading, disabled, children, ...rest } = props
-  const newClassName = disabled ? className + ' cursor-not-allowed' : className
+  const { className, isLoading, disabled, children, size = 'medium', ...rest } = props
+  const sizeClass = {
+    small: 'text-sm',
+    medium: 'text-base',
+    large: 'text-xl'
+  }[size]
+
+  const newClassName = `${className} ${sizeClass} ${disabled ? 'cursor-not-allowed' : ''}`
+
   return (
     <button className={newClassName} disabled={disabled} {...rest}>
       {isLoading && (

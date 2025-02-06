@@ -9,7 +9,7 @@ import Input from 'src/components/Input'
 import authApi from 'src/apis/auth.api'
 import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
 import { Helmet } from 'react-helmet-async'
@@ -19,6 +19,7 @@ const registerSchema = schema.pick(['email', 'password', 'confirm_password'])
 
 export default function Register() {
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
+  const [showMess, setShowMess] = useState(false)
   const navigate = useNavigate()
   const {
     register,
@@ -28,16 +29,19 @@ export default function Register() {
   } = useForm<FormData>({
     resolver: yupResolver(registerSchema)
   })
+
   const registerAccountMutation = useMutation({
     mutationFn: (body: Omit<FormData, 'confirm_password'>) => authApi.registerAccount(body)
   })
+
   const onSubmit = handleSubmit((data) => {
     const body = omit(data, ['confirm_password'])
     registerAccountMutation.mutate(body, {
       onSuccess: (data) => {
-        setIsAuthenticated(true)
-        setProfile(data.data.data.user)
-        navigate('/')
+        setShowMess(true)
+        // setIsAuthenticated(true)
+        // setProfile(data.data.data.user)
+        // navigate('/')
       },
       onError: (error) => {
         if (isAxiosUnprocessableEntityError<ErrorResponse<Omit<FormData, 'confirm_password'>>>(error)) {
@@ -105,6 +109,7 @@ export default function Register() {
                   Đăng ký
                 </Button>
               </div>
+              {showMess && <span>Thanh</span>}
               <div className='mt-8 flex items-center justify-center'>
                 <span className='text-gray-400'>Bạn đã có tài khoản?</span>
                 <Link className='ml-1 text-red-400' to='/login'>
